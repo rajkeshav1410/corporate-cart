@@ -1,0 +1,32 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100vh;
+
+  .dashboard-toolbar-wrapper {
+    .dashboard-toolbar {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .dashboard-content-wrapper {
+    height: 100%;
+
+    .dashboard-sidenav-container {
+      height: 100%;
+
+      .dashboard-nav-list {
+        width: 15rem;
+      }
+
+      .dashboard-nav-list-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-left: 1rem;
+      }
+    }
+  }
+}
