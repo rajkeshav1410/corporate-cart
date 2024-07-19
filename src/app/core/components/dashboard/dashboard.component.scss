@@ -19,6 +19,7 @@
 
       .dashboard-nav-list {
         width: 15rem;
+        padding-top: 1rem;
       }
 
       .dashboard-nav-list-item {
@@ -26,7 +27,25 @@
         align-items: center;
         gap: 1rem;
         padding-left: 1rem;
+
+        .icon {
+          display: flex;
+        }
       }
+
+      .dashboard-active-nav {
+        background-color: bisque;
+      }
+
+      .logout {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+
+    .dashboard-main-content {
+      width: 100%;
+      height: 100%;
     }
   }
 }

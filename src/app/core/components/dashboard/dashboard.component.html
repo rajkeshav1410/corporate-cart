@@ -16,55 +16,55 @@
         opened="true"
       >
         <mat-nav-list class="dashboard-nav-list">
-          <mat-list-item>
+          <mat-list-item routerLink="store" routerLinkActive="dashboard-active-nav">
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>home</mat-icon></div>
+              <div class="icon"><mat-icon mat-list-icon>store</mat-icon></div>
               <div class="title">
                 Store
               </div>
             </div>
           </mat-list-item>
           
-          <mat-list-item>
+          <mat-list-item routerLink="inventory" routerLinkActive="dashboard-active-nav">
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>home</mat-icon></div>
+              <div class="icon"><mat-icon mat-list-icon>add_shopping_cart</mat-icon></div>
               <div class="title">
                 Inventory
               </div>
             </div>
           </mat-list-item>
 
-          <mat-list-item>
+          <mat-list-item routerLink="transaction" routerLinkActive="dashboard-active-nav">
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>home</mat-icon></div>
+              <div class="icon"><mat-icon mat-list-icon>compare_arrows</mat-icon></div>
               <div class="title">
-                Transaction
+                Transactions
               </div>
             </div>
           </mat-list-item>
 
           <mat-list-item>
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>home</mat-icon></div>
+              <div class="icon"><mat-icon mat-list-icon>info</mat-icon></div>
               <div class="title">
                 About
               </div>
             </div>
           </mat-list-item>
 
-          <mat-list-item>
+          <mat-list-item class="logout" (click)="onLogout()">
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>home</mat-icon></div>
               <div class="title">
                 Logout
               </div>
+              <div class="icon"><mat-icon mat-list-icon>logout</mat-icon></div>
             </div>
           </mat-list-item>
         </mat-nav-list>
       </mat-sidenav>
 
-      <div class="example-sidenav-content">
-        Main content that resizes properly
+      <div class="dashboard-main-content">
+        <router-outlet></router-outlet>
       </div>
     </mat-sidenav-container>
   </div>
