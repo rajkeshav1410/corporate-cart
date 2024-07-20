@@ -3,11 +3,9 @@ import withErrorHandling from "../middleware/handleAsync";
 import { login, signup, me, logout } from "../controller/auth.controller";
 
 const express = require("express");
-const router = express.Router();
+export const authRoute = express.Router();
 
-router.route("/signup").post(withErrorHandling(signup));
-router.route("/login").post(withErrorHandling(login));
-router.route("/me").get(authenticate, withErrorHandling(me));
-router.route("/logout").post(authenticate, withErrorHandling(logout));
-
-module.exports = router;
+authRoute.route("/signup").post(withErrorHandling(signup));
+authRoute.route("/login").post(withErrorHandling(login));
+authRoute.route("/me").get(authenticate, withErrorHandling(me));
+authRoute.route("/logout").post(authenticate, withErrorHandling(logout));

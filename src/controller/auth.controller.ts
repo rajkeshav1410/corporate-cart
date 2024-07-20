@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
-import db from "../common/database";
 import { AvatarGenerator } from "random-avatar-generator";
 import {
   LoginRequest,
@@ -11,6 +10,7 @@ import {
   SignupRequest,
   SignupRequestSchema,
 } from "../model/auth.model";
+import { db } from "../common";
 
 const generator = new AvatarGenerator();
 

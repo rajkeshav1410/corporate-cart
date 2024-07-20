@@ -3,10 +3,8 @@ import withErrorHandling from "../middleware/handleAsync";
 import { listUsers } from "../controller/user.controller";
 
 const express = require("express");
-const router = express.Router();
+export const userRoute = express.Router();
 
-router
+userRoute
   .route("/getAllUsers")
   .get(authenticate, isAdmin, withErrorHandling(listUsers));
-
-module.exports = router;

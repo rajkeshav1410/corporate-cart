@@ -54,13 +54,15 @@ model Transaction {
   buyer    User?   @relation(name: "buyerRelation", fields: [buyerId], references: [id])
   buyerId  String? @db.ObjectId
 
-  saleInventory    Inventory  @relation(name: "saleInventoryToTransaction", fields: saleInventoryId, references: id)
+  saleInventory    Inventory  @relation(name: "saleInventoryToTransaction", fields: [saleInventoryId], references: [id])
   saleInventoryId  String     @db.ObjectId
-  tradeInventory   Inventory? @relation(name: "tradeInventoryToTransaction", fields: tradeInventoryId, references: id)
+  tradeInventory   Inventory? @relation(name: "tradeInventoryToTransaction", fields: [tradeInventoryId], references: [id])
   tradeInventoryId String?    @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([tradeInventoryId], name: "NoUniqueConstraintsOnTradeInventoryId")
 }
 
 enum Role {

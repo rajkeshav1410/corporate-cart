@@ -4,17 +4,16 @@ import cors, { CorsOptions } from "cors";
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import apiLogger from "./middleware/logger.middleware";
-import logger from "./common/logger";
 import { inventoryRouter } from "./routes";
-const errorHandler = require("./middleware/handleErrors");
-const userRoute = require("./routes/user.route");
-const authRoute = require("./routes/auth.route");
+import { logger } from "./common";
+import { errorHandler } from "./middleware";
+import { userRoute, authRoute } from "./routes";
 
 const app: Application = express();
 const url = `${process.env.BASE_URL}:${process.env.PORT}`;
 
 const corsOptions: CorsOptions = {
-  origin: '*',
+  origin: "*",
 };
 
 app.set("trust proxy", true);

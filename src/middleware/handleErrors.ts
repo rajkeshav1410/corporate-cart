@@ -2,15 +2,16 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
 import { ZodError } from "zod";
 import { ErrorHandle } from "../model/error.model";
-import logger from "../common/logger";
+import { logger } from "../common";
 
-const errorHandler = (
+export const errorHandler = (
   err: ErrorHandle,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let message = err.message || getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR);
+  let message =
+    err.message || getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR);
   let statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
 
   // Handle Zod validation errors
@@ -23,9 +24,6 @@ const errorHandler = (
       .join("; ");
   }
 
-
   logger.error(`${statusCode} ${getReasonPhrase(statusCode)} | ${message}`);
   res.status(statusCode).json({ success: "false", message });
 };
-
-module.exports = errorHandler;

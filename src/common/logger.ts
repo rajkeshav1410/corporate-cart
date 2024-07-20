@@ -1,7 +1,7 @@
 import { createLogger, transports, format } from "winston";
 import { createWriteStream } from "fs";
 
-const logger = createLogger({
+export const logger = createLogger({
   level: "info",
   format: format.combine(
     format.colorize(),
@@ -21,5 +21,3 @@ const logger = createLogger({
     }),
   ],
 });
-
-export default logger;
