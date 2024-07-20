@@ -36,6 +36,11 @@ export const routes: Routes = [
           import('./transaction').then((m) => m.TransactionComponent),
       },
       {
+        path: 'about',
+        loadComponent: () =>
+          import('./core/components/about').then((m) => m.AboutComponent),
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./core/components/page-not-found').then(

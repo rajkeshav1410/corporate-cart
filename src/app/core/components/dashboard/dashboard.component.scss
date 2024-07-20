@@ -4,10 +4,23 @@
   justify-content: flex-start;
   height: 100vh;
 
-  .dashboard-toolbar-wrapper {
-    .dashboard-toolbar {
+  .dashboard-toolbar-wrapper .dashboard-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+
+    .spacer {
+      flex: 1;
+    }
+
+    .toolbar-item-wrapper {
       display: flex;
-      justify-content: center;
+      align-items: center;
+    }
+
+    .toolbar-item{
+      margin-left: 1rem;
     }
   }
 
@@ -46,7 +59,9 @@
 
     .dashboard-main-content {
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 4rem);
+      overflow-y: auto;
+      padding: 0;
     }
   }
 }

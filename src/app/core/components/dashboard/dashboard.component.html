@@ -1,7 +1,24 @@
 <div class="dashboard-container">
   <div class="dashboard-toolbar-wrapper">
     <mat-toolbar color="primary" class="dashboard-toolbar">
-      <h1 class="example-app-name">Corporate Cart</h1>
+      <h1 class="app-name">Corporate Cart</h1>
+      <div class="spacer"></div>
+      <div class="toolbar-item-wrapper">
+        <app-avatar
+          class="toolbar-item"
+          *ngIf="currentUser"
+          [photoUrl]="currentUser.avatar"
+          [name]="currentUser.name"
+        ></app-avatar>
+        <ng-container *ngIf="!currentUser">
+          <button mat-stroked-button class="toolbar-item" routerLink="signup">
+            SIGNUP
+          </button>
+          <button mat-stroked-button class="toolbar-item" routerLink="login">
+            LOGIN
+          </button>
+        </ng-container>
+      </div>
     </mat-toolbar>
   </div>
   <div class="dashboard-content-wrapper">
@@ -10,53 +27,59 @@
       class="dashboard-sidenav-container"
       autosize
     >
-      <mat-sidenav
-        class="dashboard-sidenav"
-        mode="side"
-        opened="true"
-      >
+      <mat-sidenav class="dashboard-sidenav" mode="side" opened="true">
         <mat-nav-list class="dashboard-nav-list">
-          <mat-list-item routerLink="store" routerLinkActive="dashboard-active-nav">
+          <mat-list-item
+            routerLink="store"
+            routerLinkActive="dashboard-active-nav"
+          >
             <div class="dashboard-nav-list-item">
               <div class="icon"><mat-icon mat-list-icon>store</mat-icon></div>
-              <div class="title">
-                Store
-              </div>
-            </div>
-          </mat-list-item>
-          
-          <mat-list-item routerLink="inventory" routerLinkActive="dashboard-active-nav">
-            <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>add_shopping_cart</mat-icon></div>
-              <div class="title">
-                Inventory
-              </div>
+              <div class="title">Store</div>
             </div>
           </mat-list-item>
 
-          <mat-list-item routerLink="transaction" routerLinkActive="dashboard-active-nav">
+          <mat-list-item
+            routerLink="inventory"
+            routerLinkActive="dashboard-active-nav"
+          >
             <div class="dashboard-nav-list-item">
-              <div class="icon"><mat-icon mat-list-icon>compare_arrows</mat-icon></div>
-              <div class="title">
-                Transactions
+              <div class="icon">
+                <mat-icon mat-list-icon>add_shopping_cart</mat-icon>
               </div>
+              <div class="title">Inventory</div>
             </div>
           </mat-list-item>
 
-          <mat-list-item routerLink="signup">
+          <mat-list-item
+            routerLink="transaction"
+            routerLinkActive="dashboard-active-nav"
+          >
+            <div class="dashboard-nav-list-item">
+              <div class="icon">
+                <mat-icon mat-list-icon>compare_arrows</mat-icon>
+              </div>
+              <div class="title">Transactions</div>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item
+            routerLink="about"
+            routerLinkActive="dashboard-active-nav"
+          >
             <div class="dashboard-nav-list-item">
               <div class="icon"><mat-icon mat-list-icon>info</mat-icon></div>
-              <div class="title">
-                About
-              </div>
+              <div class="title">About</div>
             </div>
           </mat-list-item>
 
-          <mat-list-item class="logout" (click)="onLogout()">
+          <mat-list-item
+            class="logout"
+            *ngIf="currentUser"
+            (click)="onLogout()"
+          >
             <div class="dashboard-nav-list-item">
-              <div class="title">
-                Logout
-              </div>
+              <div class="title">Logout</div>
               <div class="icon"><mat-icon mat-list-icon>logout</mat-icon></div>
             </div>
           </mat-list-item>
