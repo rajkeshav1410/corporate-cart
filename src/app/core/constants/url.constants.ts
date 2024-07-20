@@ -5,5 +5,8 @@ export const Urls = {
 };
 
 export const Routes = {
-  LOGIN: 'login'
-}
+  LOGIN: 'login',
+  INVENTORY: 'inventory',
+  STORE: 'store',
+  TRANSACTION: 'transaction',
+};

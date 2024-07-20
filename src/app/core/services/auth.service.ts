@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Routes, Urls } from '../constants';
 import { Router } from '@angular/router';
 import { AuthUser } from '../models';
@@ -30,7 +30,10 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    this.router.navigate([Routes.LOGIN])
-    return this.http.post(Urls.LOGOUT, {});
+    return this.http.post(Urls.LOGOUT, {}).pipe(
+      tap(() => {
+        this.router.navigate([Routes.LOGIN]);
+      }),
+    );
   }
 }

@@ -6,7 +6,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { AuthService } from '../../services';
+import { AuthService, StorageService } from '../../services';
+import { Routes } from '../../constants';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,12 +26,17 @@ import { AuthService } from '../../services';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  constructor(private authService: AuthService) {}
+  routes = Routes;
+
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+  ) {}
 
   onLogout = () => {
     this.authService.logout().subscribe({
       next: (response: Response) => {
-        console.log(response);
+        this.storageService.clean();
       },
     });
   };
