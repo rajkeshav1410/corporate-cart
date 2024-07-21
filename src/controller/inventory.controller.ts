@@ -267,9 +267,11 @@ export const getInventoryImage = async (
     req.params.inventoryImageId
   );
 
+  const defImagePath = path.join(__dirname, "../../uploads", "wallpaper");
+
   console.log(imagePath);
 
   if (!fs.existsSync(imagePath))
-    return throwError(`Image not found`, StatusCodes.NOT_FOUND, next);
-  res.status(StatusCodes.OK).sendFile(imagePath);
+    res.status(StatusCodes.OK).sendFile(defImagePath);
+  else res.status(StatusCodes.OK).sendFile(imagePath);
 };
