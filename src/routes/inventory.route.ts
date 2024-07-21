@@ -1,4 +1,4 @@
-import { authenticate, isAuthenticated } from "../middleware/auth.middleware";
+import { authenticate, uploadImage } from "../middleware";
 import withErrorHandling from "../middleware/handleAsync";
 import {
   buyInventory,
@@ -6,10 +6,12 @@ import {
   // deleteInventory,
   getInventory,
   getInventoryById,
+  getInventoryImage,
   getStore,
   sellInventory,
   tradeInventory,
   updateInventory,
+  uploadInventoryImage,
 } from "../controller";
 
 const express = require("express");
@@ -39,3 +41,9 @@ inventoryRouter
 inventoryRouter
   .route("/trade/:inventoryId/:tradeInventoryId")
   .post(authenticate, withErrorHandling(tradeInventory));
+inventoryRouter
+  .route("/upload")
+  .post(authenticate, uploadImage, withErrorHandling(uploadInventoryImage));
+inventoryRouter
+  .route("/image/:inventoryImageId")
+  .get(authenticate, withErrorHandling(getInventoryImage));

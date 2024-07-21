@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import path from "path";
+import * as fs from "node:fs";
 import { db, throwError } from "../common";
 import {
   CreateInventoryRequest,
@@ -7,12 +9,7 @@ import {
   UpdateInventoryRequest,
   UpdateInventoryRequestShema,
 } from "../model";
-import {
-  Inventory,
-  Transaction,
-  TransactionStatus,
-  TransactionType,
-} from "@prisma/client";
+import { TransactionStatus, TransactionType } from "@prisma/client";
 
 export const createInventory = async (
   req: Request,
@@ -65,12 +62,12 @@ export const updateInventory = async (
     },
     data: {
       itemName:
-        updateInventoryRequest.itemName?.trim() ||
-        updateInventoryRequest.itemName,
+        updateInventoryRequest.itemName?.trim() || existingInventory.itemName,
       itemDescription:
         updateInventoryRequest.itemDescription?.trim() ||
-        updateInventoryRequest.itemDescription,
-      price: updateInventoryRequest.price || updateInventoryRequest.price,
+        existingInventory.itemDescription,
+      price: updateInventoryRequest.price || existingInventory.price,
+      category: updateInventoryRequest.category || existingInventory.category,
     },
   });
 
@@ -227,6 +224,7 @@ export const buyInventory = async (
         itemDescription: existingInventory.itemDescription,
         price: existingInventory.price,
         userId: req.user.id,
+        category: existingInventory.category,
       },
     }),
     db.inventory.update({
@@ -248,4 +246,30 @@ export const tradeInventory = async (
   next: NextFunction
 ) => {
   res.status(StatusCodes.OK).json({});
+};
+
+export const uploadInventoryImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.status(StatusCodes.OK).json({});
+};
+
+export const getInventoryImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const imagePath = path.join(
+    __dirname,
+    "../../uploads",
+    req.params.inventoryImageId
+  );
+
+  console.log(imagePath);
+
+  if (!fs.existsSync(imagePath))
+    return throwError(`Image not found`, StatusCodes.NOT_FOUND, next);
+  res.status(StatusCodes.OK).sendFile(imagePath);
 };
