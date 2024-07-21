@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService, StorageService } from '../../services';
 import { CustomHttpErrorResponse } from '../../models';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     NgIf,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

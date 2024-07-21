@@ -1,4 +1,6 @@
 <div class="circle">
   {{ name | nameTransformer }}
-  <img src="{{ photoUrl }}" />
+  <div class="avatar-wrapper">
+    <img ngSrc="{{ photoUrl }}" class="avatar" fill>
+  </div>
 </div>

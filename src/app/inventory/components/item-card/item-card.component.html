@@ -1,0 +1,23 @@
+<mat-card class="inventory-card mat-typography">
+  <mat-card-content>
+    <div class="inventory-detail-container">
+      <div class="image-wrapper">
+        <img
+          mat-card-image
+          ngSrc="{{ getInventoryImageUrl() }}"
+          class="inventory-card-image"
+          fill
+          priority
+        />
+      </div>
+      <div class="detail">
+        <div class="mat-title-medium">{{this.item.itemName}}</div>
+        <div class="mat-label-medium">{{this.item.itemDescription}}</div>
+        <div class="mat-label-medium">{{this.item.price}}</div>
+      </div>
+      <div class="control-wrapper">
+        <div class="controls"></div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

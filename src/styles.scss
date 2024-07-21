@@ -1,32 +1,84 @@
-/* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
+// /* You can add global styles to this file, and also import other style files */
+// @use "@angular/material" as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// html,
+// body {
+//   height: 100%;
+// }
+// body {
+//   margin: 0;
+//   font-family: Roboto, "Helvetica Neue", sans-serif;
+// }
 
-$primary-palette: mat.define-palette(mat.$pink-palette);
-$accent-palette: mat.define-palette(mat.$blue-palette);
+// $primary-palette: mat.define-palette(mat.$pink-palette);
+// $accent-palette: mat.define-palette(mat.$blue-palette);
 
-.weak {
-    color: mat.get-color-from-palette($primary-palette, 500, .25);
+// .weak {
+//   color: mat.get-color-from-palette($primary-palette, 500, 0.25);
+// }
+
+// // define colors
+// $colors: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900;
+// @each $color in $colors {
+//   .primary-#{$color} {
+//     color: mat.get-color-from-palette($primary-palette, $color);
+//   }
+//   .accent-#{$color} {
+//     color: mat.get-color-from-palette($accent-palette, $color);
+//   }
+// }
+
+// @each $color in $colors {
+//   .primary-bg-#{$color} {
+//     background-color: mat.get-color-from-palette($primary-palette, $color);
+//   }
+//   .accent-bg-#{$color} {
+//     background-color: mat.get-color-from-palette($accent-palette, $color);
+//   }
+// }
+
+// // Use the default configuration.
+// $my-typography: mat.define-typography-config();
+// @include mat.typography-hierarchy($my-typography);
+
+// // $custom-typography: mat-typography-config(
+// //   $font-family: '"Oswald", sans-serif;',
+// // );
+// // @include mat.core($custom-typography);
+
+@use "@angular/material" as mat;
+@include mat.core();
+
+$angular-material-theming-css-vars-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+      use-system-variables: true,
+    ),
+    typography: (
+      use-system-variables: true,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+:root {
+  @include mat.all-component-themes($angular-material-theming-css-vars-theme);
+  @include mat.typography-hierarchy($angular-material-theming-css-vars-theme);
+  @include mat.system-level-colors($angular-material-theming-css-vars-theme);
+  @include mat.system-level-typography(
+    $angular-material-theming-css-vars-theme
+  );
 }
 
-// define colors
-$colors: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900;
-@each $color in $colors {
-    .primary-#{$color} {
-        color: mat.get-color-from-palette($primary-palette, $color);
-    }
-    .accent-#{$color} {
-        color: mat.get-color-from-palette($accent-palette, $color);
-    }
+html,
+body {
+  height: 100%;
 }
-
-@each $color in $colors {
-    .primary-bg-#{$color} {
-        background-color: mat.get-color-from-palette($primary-palette, $color);
-    }
-    .accent-bg-#{$color} {
-        background-color: mat.get-color-from-palette($accent-palette, $color);
-    }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

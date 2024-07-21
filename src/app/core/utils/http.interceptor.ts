@@ -18,7 +18,7 @@ export function httpRequestInterceptor(
   let newHeaders = new HttpHeaders();
 
   if (req.body instanceof FormData) {
-    newHeaders = newHeaders.append('Content-Type', 'multipart/form-data');
+    // newHeaders = newHeaders.append('Content-Type', 'multipart/form-data');
   } else if (req.body instanceof Blob) {
     newHeaders = newHeaders.append('Content-Type', 'application/octet-stream');
   } else {

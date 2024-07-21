@@ -1,0 +1,14 @@
+.inventory-card {
+  margin-bottom: 16px;
+
+  .inventory-detail-container {
+    display: flex;
+    flex-direction: row;
+
+    .image-wrapper {
+      position: relative;
+      width: 10rem;
+      height: 10rem;
+    }
+  }
+}

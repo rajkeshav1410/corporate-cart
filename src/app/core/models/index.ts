@@ -1,2 +1,3 @@
 export * from './user.model';
-export * from './error.model';
+export * from './common.model';
+export * from './inventory.model';

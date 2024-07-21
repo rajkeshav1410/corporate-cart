@@ -46,6 +46,9 @@ export class DashboardComponent implements OnInit {
       next: (response: Response) => {
         this.storageService.clean();
       },
+      error: () => {
+        this.storageService.clean();
+      },
     });
   };
 }
