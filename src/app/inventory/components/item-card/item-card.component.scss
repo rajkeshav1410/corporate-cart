@@ -1,5 +1,6 @@
 .inventory-card {
   margin-bottom: 16px;
+  height: 12rem;
 
   .inventory-detail-container {
     display: flex;
@@ -7,8 +8,35 @@
 
     .image-wrapper {
       position: relative;
-      width: 10rem;
+      width: 33%;
       height: 10rem;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 250px;
+      }
+    }
+
+    .detail {
+      margin-left: 1rem;
+      .title {
+        font-size: larger;
+        font-weight: 600;
+      }
+
+      .description {
+        font-size: medium;
+        font-weight: 400;
+      }
+
+      .price {
+        font-size: large;
+        font-weight: 300;
+
+        position: absolute;
+        bottom: 1rem;
+      }
     }
   }
 }

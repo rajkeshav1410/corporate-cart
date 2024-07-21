@@ -10,6 +10,12 @@
     align-items: center;
     height: 4rem;
 
+    .app-name {
+      margin: 0;
+      font-size: larger;
+      font-weight: 500;
+    }
+
     .spacer {
       flex: 1;
     }
@@ -19,7 +25,7 @@
       align-items: center;
     }
 
-    .toolbar-item{
+    .toolbar-item {
       margin-left: 1rem;
     }
   }
@@ -27,12 +33,21 @@
   .dashboard-content-wrapper {
     height: 100%;
 
+    mat-sidenav {
+      width: 16.5rem;
+      margin-left: 0.5rem;
+    }
+
     .dashboard-sidenav-container {
       height: 100%;
 
       .dashboard-nav-list {
-        width: 15rem;
-        padding-top: 1rem;
+        // width: 15rem;
+        padding: 1rem 0;
+      }
+
+      .mat-mdc-nav-list .mat-mdc-list-item {
+        margin-bottom: 0.5rem;
       }
 
       .dashboard-nav-list-item {

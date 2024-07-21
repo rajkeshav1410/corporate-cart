@@ -19,6 +19,6 @@ export class ItemCardComponent implements OnInit {
 
   getInventoryImageUrl = () =>
     getUrl(API.GET_INVENTORY_IMAGE, {
-      inventoryImageId: this.item.inventoryImageId,
+      inventoryImageId: this.item.inventoryImageId || 'default',
     });
 }
