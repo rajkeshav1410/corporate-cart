@@ -3,15 +3,18 @@
     <div class="inventory-detail-container">
       <div class="image-wrapper">
         <img
-          ngSrc="{{ getInventoryImageUrl() }}"
+          ngSrc="{{ getImageUrl() }}"
           class="inventory-card-image"
-          placeholder="./public/1"
+          [placeholder]="placeholder"
           [priority]="index < 5"
           fill
         />
       </div>
       <div class="detail">
-        <div class="title">{{ this.item.itemName }}</div>
+        <div class="title">
+          {{ this.item.itemName }}
+        </div>
+        <mat-chip class="category">{{ this.item.category }}</mat-chip>
         <div class="description">{{ this.item.itemDescription }}</div>
       </div>
       <div class="control-wrapper">
@@ -19,7 +22,7 @@
           <button mat-icon-button>
             <mat-icon>archive</mat-icon>
           </button>
-          <button mat-icon-button>
+          <button mat-icon-button (click)="onEditButtonClicked()">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button>

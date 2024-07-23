@@ -1,4 +1,4 @@
-import { Param } from '@app/core';
+import { API, CategoryMenuData, Param } from '@app/core';
 
 export const transformName = (fullName: string) => {
   let names = fullName.split(' ');
@@ -18,4 +18,21 @@ export const getUrl = (baseURL: string, params: Param): string => {
   });
 
   return modifiedURL;
+};
+
+export const getInventoryImageUrl = (inventoryImageId: string) =>
+  getUrl(API.GET_INVENTORY_IMAGE, {
+    inventoryImageId: inventoryImageId || 'default',
+  });
+
+export const getCategoryNameById = (categoryId: string) => {
+  const category = CategoryMenuData.find((cat) => cat.value === categoryId);
+  return category ? category.viewValue : 'Category not found';
+};
+
+export const getCategoryIdByName = (categoryName: string) => {
+  const category = CategoryMenuData.find(
+    (cat) => cat.viewValue.toLowerCase() === categoryName.toLowerCase(),
+  );
+  return category ? category.value : 'Category not found';
 };

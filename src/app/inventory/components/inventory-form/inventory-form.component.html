@@ -1,5 +1,5 @@
 <div mat-dialog-title class="dialog-title">
-  <h3 class="title">Create inventory</h3>
+  <h3 class="title mat-typography">{{getTitle()}}</h3>
   <button mat-icon-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -55,6 +55,16 @@
             "
             >Description must be atleast 20 characters</mat-error
           >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Select category</mat-label>
+          <mat-select formControlName="category">
+            <mat-option
+              *ngFor="let category of categoryList; trackBy: categoryIndex"
+              [value]="category.value"
+              >{{ category.viewValue }}</mat-option
+            >
+          </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Price</mat-label>

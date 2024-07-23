@@ -3,6 +3,7 @@
     *ngFor="let item of userInventory; trackBy: getIdTracking; index as i"
     [item]="item"
     [index]="i"
+    (onEdit)="onEdit($event)"
   ></app-item-card>
   <button mat-fab class="create-button" (click)="onAddClick()">
     <mat-icon mat-list-icon>add</mat-icon>

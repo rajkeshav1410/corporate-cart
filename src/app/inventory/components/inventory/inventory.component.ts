@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserInventory } from '@app/core';
+import { Action, InventoryData, ModalId, UserInventory } from '@app/core';
 import { InventoryService, InventoryFormComponent } from '@app/inventory';
 import { ItemCardComponent } from '../item-card';
 import { Overlay } from '@angular/cdk/overlay';
@@ -33,33 +33,48 @@ export class InventoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.fetchInventoryData();
+  }
+
+  fetchInventoryData = () =>
     this.inventoryService.getUserInventory().subscribe({
       next: (response) => {
         this.userInventory = response;
       },
     });
-  }
 
   public getIdTracking = (index: number, item: UserInventory) => {
     return item.id;
   };
 
-  onFileUpload = () => {
-    this.inventoryService.uploadImage(this.file, '1');
+  onAddClick = () => {
+    this.inventoryService.setInventoryData({} as InventoryData, Action.ADD);
+    this.openModalFromRight();
   };
 
-  onAddClick = () => {
-    this.matDialogService.open(InventoryFormComponent, {
-      height: '100vh',
-      width: '66vw',
-      maxWidth: '66vw',
-      position: { right: '0' },
-      panelClass: [
-        'custom-dialog',
-        'animate__animated',
-        'animate__slideInRight',
-      ],
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-    });
+  onEdit = (editInventory: UserInventory) => {
+    this.inventoryService.setInventoryData(editInventory, Action.EDIT);
+    this.openModalFromRight();
+  };
+
+  openModalFromRight = () => {
+    this.matDialogService
+      .open(InventoryFormComponent, {
+        id: ModalId.INVENTORY_CREATE_EDIT,
+        height: '100vh',
+        width: '66vw',
+        maxWidth: '66vw',
+        position: { right: '0' },
+        panelClass: [
+          'custom-dialog',
+          'animate__animated',
+          'animate__slideInRight',
+        ],
+        scrollStrategy: this.overlay.scrollStrategies.noop(),
+      })
+      .afterClosed()
+      .subscribe({
+        next: () => this.fetchInventoryData(),
+      });
   };
 }

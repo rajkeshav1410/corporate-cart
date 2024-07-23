@@ -7,3 +7,8 @@ export interface CustomHttpErrorResponse extends HttpErrorResponse {
 export interface Param {
   [key: string]: string | number;
 }
+
+export interface MenuItem {
+  value: string;
+  viewValue: string;
+}

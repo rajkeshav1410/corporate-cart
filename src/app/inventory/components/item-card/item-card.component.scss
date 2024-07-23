@@ -28,10 +28,26 @@
       width: 50%;
       min-width: 50%;
 
+      .mat-mdc-standard-chip {
+        --mdc-chip-label-text-size: x-small;
+        --mdc-chip-label-text-weight: 900;
+      }
+
+      .mat-mdc-chip.mat-mdc-standard-chip {
+        --mdc-chip-container-height: 24px;
+      }
+
       .title {
         font-size: larger;
         font-weight: 600;
+      }
+
+      .category {
+        font-size: x-small;
+        font-weight: 600;
         margin-bottom: 4px;
+        margin-top: 2px;
+        width: fit-content;
       }
 
       .description {

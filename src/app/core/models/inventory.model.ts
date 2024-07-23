@@ -3,20 +3,27 @@ export interface UserInventory {
   itemName: string;
   itemDescription: string;
   price: number;
+  category: string;
   userId: string;
   inventoryImageId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+export interface InventoryData extends UserInventory {
+  action: Action;
+}
+
 export interface CreateInventoryRequest {
   itemName: string;
   itemDescription: string;
   price: number;
+  category: string;
+  inventoryImageId: string;
 }
 
-export interface UpdateInventoryRequest {
-  itemName?: string;
-  itemDescription?: string;
-  price?: number;
+export enum Action {
+  ADD,
+  EDIT,
+  DELETE,
 }
