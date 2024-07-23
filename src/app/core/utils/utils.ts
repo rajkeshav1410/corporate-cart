@@ -1,4 +1,4 @@
-import { Param } from '../models';
+import { Param } from '@app/core';
 
 export const transformName = (fullName: string) => {
   let names = fullName.split(' ');

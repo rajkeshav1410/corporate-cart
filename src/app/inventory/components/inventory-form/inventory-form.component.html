@@ -1,0 +1,100 @@
+<div mat-dialog-title class="dialog-title">
+  <h3 class="title">Create inventory</h3>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="inventory-form-wrapper">
+  <mat-dialog-content class="mat-typography inventory-dialog-container">
+    <form [formGroup]="inventoryForm" class="inventory-form">
+      <div class="controls">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Title</mat-label>
+          <input
+            matInput
+            placeholder="Give a title for your item"
+            formControlName="title"
+            required
+          />
+          <mat-error *ngIf="inventoryForm.get('title')?.hasError('required')"
+            >Title is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              inventoryForm.get('title')?.hasError('minlength') &&
+              inventoryForm.get('title')?.touched
+            "
+            >Title must be atleast 3 characters</mat-error
+          >
+          <mat-error
+            *ngIf="
+              inventoryForm.get('title')?.hasError('maxlength') &&
+              inventoryForm.get('title')?.touched
+            "
+            >Title can have at most 40 characters</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            placeholder="Describe your item in minimum 20 characters"
+            formControlName="description"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="4"
+            cdkAutosizeMaxRows="8"
+          ></textarea>
+          <mat-error
+            *ngIf="inventoryForm.get('description')?.hasError('required')"
+            >Description is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              inventoryForm.get('description')?.hasError('minLength') &&
+              inventoryForm.get('description')?.touched
+            "
+            >Description must be atleast 20 characters</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Price</mat-label>
+          <input matInput placeholder="" formControlName="price" required />
+          <mat-icon matPrefix>currency_rupee</mat-icon>
+          <mat-error *ngIf="inventoryForm.get('price')?.hasError('pattern')"
+            >Please enter price as number</mat-error
+          >
+          <mat-error
+            *ngIf="
+              (inventoryForm.get('price')?.hasError('required') ||
+                inventoryForm.get('price')?.hasError('min') ||
+                inventoryForm.get('price')?.hasError('max')) &&
+              inventoryForm.get('price')?.touched
+            "
+            >Price should be in range 0 - 1000000</mat-error
+          >
+        </mat-form-field>
+
+        <button type="button" mat-raised-button (click)="fileInput.click()">
+          Add item image
+        </button>
+        <input hidden (change)="onFileChange($event)" #fileInput type="file" />
+        <ng-container *ngIf="url !== ''">
+          <div class="image-wrapper">
+            <img src="{{ url }}" class="inventory-upload-image" fill />
+          </div>
+        </ng-container>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    class="button"
+    [disabled]="!(inventoryForm.valid && enableSave)"
+    (click)="onSubmit()"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

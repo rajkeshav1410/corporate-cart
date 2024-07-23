@@ -28,7 +28,7 @@ export const routes: Routes = [
       {
         path: 'inventory',
         loadComponent: () =>
-          import('./inventory').then((m) => m.InventoryComponent),
+          import('@app/inventory').then((m) => m.InventoryComponent),
       },
       {
         path: 'transaction',

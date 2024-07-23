@@ -1,10 +1,10 @@
 <div class="inventory-contatiner">
-  <div>
-    <input type="file" (change)="onFileChange($event)" />
-    <button mat-stroked-button (click)="onFileUpload()">Upload</button>
-  </div>
   <app-item-card
-    *ngFor="let item of this.userInventory"
+    *ngFor="let item of userInventory; trackBy: getIdTracking; index as i"
     [item]="item"
+    [index]="i"
   ></app-item-card>
+  <button mat-fab class="create-button" (click)="onAddClick()">
+    <mat-icon mat-list-icon>add</mat-icon>
+  </button>
 </div>

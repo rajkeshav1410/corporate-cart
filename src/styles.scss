@@ -1,53 +1,9 @@
-// /* You can add global styles to this file, and also import other style files */
-// @use "@angular/material" as mat;
-
-// html,
-// body {
-//   height: 100%;
-// }
-// body {
-//   margin: 0;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
-// }
-
-// $primary-palette: mat.define-palette(mat.$pink-palette);
-// $accent-palette: mat.define-palette(mat.$blue-palette);
-
-// .weak {
-//   color: mat.get-color-from-palette($primary-palette, 500, 0.25);
-// }
-
-// // define colors
-// $colors: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900;
-// @each $color in $colors {
-//   .primary-#{$color} {
-//     color: mat.get-color-from-palette($primary-palette, $color);
-//   }
-//   .accent-#{$color} {
-//     color: mat.get-color-from-palette($accent-palette, $color);
-//   }
-// }
-
-// @each $color in $colors {
-//   .primary-bg-#{$color} {
-//     background-color: mat.get-color-from-palette($primary-palette, $color);
-//   }
-//   .accent-bg-#{$color} {
-//     background-color: mat.get-color-from-palette($accent-palette, $color);
-//   }
-// }
-
-// // Use the default configuration.
-// $my-typography: mat.define-typography-config();
-// @include mat.typography-hierarchy($my-typography);
-
-// // $custom-typography: mat-typography-config(
-// //   $font-family: '"Oswald", sans-serif;',
-// // );
-// // @include mat.core($custom-typography);
-
 @use "@angular/material" as mat;
 @include mat.core();
+
+:root {
+  --animate-duration: 100ms;
+}
 
 $angular-material-theming-css-vars-theme: mat.define-theme(
   (
@@ -82,3 +38,55 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+button[mat-icon-button] {
+  $large-size-button: 80px;
+  $large-size-icon: 48px;
+
+  &.icon-button-large {
+    width: $large-size-button;
+    height: $large-size-button;
+    line-height: $large-size-button;
+    .mat-icon {
+      font-size: $large-size-icon;
+      width: $large-size-icon;
+      height: $large-size-icon;
+      line-height: $large-size-icon;
+    }
+    .mat-button-ripple {
+      font-size: inherit;
+      width: inherit;
+      height: inherit;
+      line-height: inherit;
+    }
+  }
+
+  $small-size-button: 24px;
+  $small-size-icon: 18px;
+
+  &.icon-button-small {
+    width: $small-size-button;
+    height: $small-size-button;
+    line-height: $small-size-button;
+    .mat-icon {
+      font-size: $small-size-icon;
+      width: $small-size-icon;
+      height: $small-size-icon;
+      line-height: $small-size-icon;
+    }
+    .mat-button-ripple {
+      font-size: inherit;
+      width: inherit;
+      height: inherit;
+      line-height: inherit;
+    }
+  }
+}
+
+.custom-dialog .mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 0px;
+}
+
+.mat-mdc-dialog-content {
+  max-height: unset;
+ }
