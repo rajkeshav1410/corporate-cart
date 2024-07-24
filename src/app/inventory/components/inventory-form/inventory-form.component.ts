@@ -127,12 +127,18 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   getTitle = () =>
     this.formAction === Action.EDIT ? 'Update Inventory' : 'Create Inventory';
 
-  onFileChange = (event: any) => {
-    this.file = event.target.files[0];
+  onFileChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files?.length) {
+      return;
+    }
+
+    this.file = input.files[0];
 
     const reader = new FileReader();
     reader.readAsDataURL(this.file);
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.url = reader.result?.toString() || '';
       this.enableSave = true;
     };
@@ -141,15 +147,20 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   onSubmit = () => {
     const categeoryId = this.inventoryForm.get('category')?.value;
     console.log(categeoryId);
-    let requestBody: CreateInventoryRequest = {
-        itemName: this.inventoryForm.get('title')?.value!,
-        itemDescription: this.inventoryForm.get('description')?.value!,
-        price: parseFloat(this.inventoryForm.get('price')?.value!),
-        category: getCategoryNameById(categeoryId!),
-        inventoryImageId: '',
-      },
-      inventoryImageId,
-      callFn;
+    const requestBody: CreateInventoryRequest = {
+      itemName:
+        this.inventoryForm.get('title')?.value || this.inventory.itemName,
+      itemDescription:
+        this.inventoryForm.get('description')?.value ||
+        this.inventory.itemDescription,
+      price: parseFloat(
+        this.inventoryForm.get('price')?.value ||
+          this.inventory.price.toString(),
+      ),
+      category: getCategoryNameById(categeoryId!) || this.inventory.category,
+      inventoryImageId: '',
+    };
+    let inventoryImageId, callFn;
 
     console.log(requestBody);
 

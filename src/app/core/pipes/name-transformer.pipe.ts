@@ -8,10 +8,10 @@ export class NameTransformerPipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return value;
 
-    let names = value.split(' ');
-    let firstName =
+    const names = value.split(' ');
+    const firstName =
       names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase();
-    let lastName =
+    const lastName =
       names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
 
     return `${lastName}, ${firstName}`;

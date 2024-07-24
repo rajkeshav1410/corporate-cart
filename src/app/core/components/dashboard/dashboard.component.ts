@@ -7,7 +7,6 @@ import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService, StorageService } from '../../services';
-import { Routes } from '../../constants';
 import { AuthUser } from '../../models';
 import { AvatarComponent } from '../avatar';
 
@@ -43,7 +42,7 @@ export class DashboardComponent implements OnInit {
 
   onLogout = () => {
     this.authService.logout().subscribe({
-      next: (response: Response) => {
+      next: () => {
         this.storageService.clean();
       },
       error: () => {

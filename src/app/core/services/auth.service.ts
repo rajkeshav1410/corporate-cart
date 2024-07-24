@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Routes, API } from '../constants';
 import { Router } from '@angular/router';
-import { AuthUser } from '../models';
+import { AuthUser, VoidResponse } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class AuthService {
     name: string,
     email: string,
     password: string,
-  ): Observable<any> => {
+  ): Observable<VoidResponse> => {
     return this.http.post(API.SIGNUP, {
       name,
       email,
@@ -33,7 +33,7 @@ export class AuthService {
     });
   };
 
-  logout = (): Observable<any> => {
+  logout = (): Observable<VoidResponse> => {
     return this.http.post(API.LOGOUT, {}).pipe(
       tap(() => {
         this.router.navigate([Routes.LOGIN]);

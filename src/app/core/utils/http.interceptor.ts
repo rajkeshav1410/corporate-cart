@@ -5,7 +5,7 @@ import {
   HttpHeaders,
   HttpRequest,
 } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Routes } from '../constants';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';

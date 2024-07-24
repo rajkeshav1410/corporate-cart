@@ -1,12 +1,12 @@
 import { API, CategoryMenuData, Param } from '@app/core';
 
 export const transformName = (fullName: string) => {
-  let names = fullName.split(' ');
-  let firstName =
+  const names = fullName.split(' ');
+  const firstName =
     names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase();
-  let lastName =
+  const lastName =
     names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
-  let transformedName = `${lastName}, ${firstName}`;
+  const transformedName = `${lastName}, ${firstName}`;
   return transformedName;
 };
 
