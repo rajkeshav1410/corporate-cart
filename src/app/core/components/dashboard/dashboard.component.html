@@ -7,8 +7,7 @@
         <app-avatar
           class="toolbar-item"
           *ngIf="currentUser"
-          [photoUrl]="currentUser.avatar"
-          [name]="currentUser.name"
+          [user]="currentUser"
         ></app-avatar>
         <ng-container *ngIf="!currentUser">
           <button mat-stroked-button class="toolbar-item" routerLink="signup">
