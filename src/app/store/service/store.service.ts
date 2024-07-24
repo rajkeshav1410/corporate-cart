@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API, UserInventory } from '@app/core';
+import { API, getUrl, UserInventory } from '@app/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -17,4 +17,7 @@ export class StoreService {
     this.http.get<UserInventory[]>(API.GET_STORE_DATA);
 
   setStoreData = (data: UserInventory) => this._storeData.next(data);
+
+  buyItem = (inventoryId: string) =>
+    this.http.post(getUrl(API.BUY_ITEM, { inventoryId }), null);
 }

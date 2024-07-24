@@ -1,12 +1,19 @@
 import { NgForOf } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ModalId, UserInventory } from '@app/core';
+import {
+  CustomHttpErrorResponse,
+  ModalId,
+  NotificationService,
+  Routes,
+  StorageService,
+  UserInventory,
+} from '@app/core';
 import { StoreService } from '@app/store/service';
 import { ItemCardComponent } from '../item-card';
 import { ItemDetailComponent } from '../item-detail';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Overlay } from '@angular/cdk/overlay';
-import { InventoryFormComponent } from '@app/inventory';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store',
@@ -22,6 +29,9 @@ export class StoreComponent implements OnInit {
 
   constructor(
     private storeService: StoreService,
+    private storageService: StorageService,
+    private notificationService: NotificationService,
+    private router: Router,
     private matDialogService: MatDialog,
     private overlay: Overlay,
   ) {}
@@ -43,20 +53,45 @@ export class StoreComponent implements OnInit {
 
   openItemDetails = (data: UserInventory) => {
     this.storeService.setStoreData(data);
-    this.matDialogService.open(this.itemDetail, {
-      id: ModalId.STORE_ITEM_DETAIL,
-      // height: '100vh',
-      // width: '66vw',
-      // maxWidth: '66vw',
-      // position: { right: '0' },
-      panelClass: ['custom-dialog'],
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-    });
+    this.matDialogService
+      .open(this.itemDetail, {
+        id: ModalId.STORE_ITEM_DETAIL,
+        height: '23rem',
+        width: '50rem',
+        maxWidth: '50rem',
+        panelClass: ['custom-dialog-nobg'],
+        scrollStrategy: this.overlay.scrollStrategies.noop(),
+      })
+      .afterClosed()
+      .subscribe({
+        next: () => this.fetchStoreData(),
+      });
   };
 
-  onBuy = (inventoryId: string) => {
-    // this.storeService.setInventoryData({} as InventoryData, Action.ADD);
-    // this.openModalFromRight();
+  onBuy = (inventory: UserInventory) => {
+    if (!this.storageService.isLoggedIn()) this.router.navigate([Routes.LOGIN]);
+
+    const userCoin = this.storageService.getUser()?.coin || 0;
+    if (userCoin < inventory.price) {
+      this.notificationService.error(
+        "You don't have enough coin to puchase this item!",
+      );
+      return;
+    }
+
+    this.storeService.buyItem(inventory.id).subscribe({
+      next: () => {
+        this.notificationService.success(
+          'Congratulations! now you own this item',
+        );
+        this.fetchStoreData();
+        this.storageService.refreshUser();
+        this.matDialogService.getDialogById(ModalId.STORE_ITEM_DETAIL)?.close();
+      },
+      error: (error: CustomHttpErrorResponse) => {
+        this.notificationService.error(error.error.message);
+      },
+    });
   };
 
   onAddWishlist = (inventoryId: string) => {

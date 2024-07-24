@@ -2,6 +2,7 @@ export const EMPTY_STRING = '';
 export const ZERO_STRING = '0';
 export const ZERO = 0;
 export const NEG_ONE = -1;
+export const NOTIF_TIMEOUT = 2000;
 
 export const USER_KEY = 'auth-user';
 

@@ -87,6 +87,27 @@ button[mat-icon-button] {
   --mdc-dialog-container-shape: 0px;
 }
 
+.custom-dialog-nobg .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #rgba(0, 0, 0, 0);
+  --mdc-dialog-container-shape: 0px;
+}
+
 .mat-mdc-dialog-content {
   max-height: unset;
- }
+}
+
+.basic-container {
+  padding: 5px;
+}
+
+.blue-snackbar {
+  background: #0D47A1;
+}
+
+.success-snackbar {
+  background: #69F0AE;
+}
+
+.error-snackbar {
+  background: #E57373;
+}
