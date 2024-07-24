@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
-import { JwtPayload } from "../model/auth.model";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Role, User } from "@prisma/client";
-import { db } from "../common";
+import { db } from "@app/common";
 
 declare global {
   namespace Express {

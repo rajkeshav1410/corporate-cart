@@ -1,6 +1,5 @@
-import { authenticate } from "../middleware/auth.middleware";
-import withErrorHandling from "../middleware/handleAsync";
-import { login, signup, me, logout } from "../controller/auth.controller";
+import { signup, login, me, logout } from "@app/controller";
+import { withErrorHandling, authenticate } from "@app/middleware";
 
 const express = require("express");
 export const authRoute = express.Router();

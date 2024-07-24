@@ -2,14 +2,19 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import path from "path";
 import * as fs from "node:fs";
-import { db, throwError } from "../common";
 import {
   CreateInventoryRequest,
   CreateInventoryRequestShema,
   UpdateInventoryRequest,
   UpdateInventoryRequestShema,
-} from "../model";
-import { TransactionStatus, TransactionType } from "@prisma/client";
+  UserInventoryResponse,
+} from "@app/model";
+import {
+  Transaction,
+  TransactionStatus,
+  TransactionType,
+} from "@prisma/client";
+import { db, throwError } from "@app/common";
 
 export const createInventory = async (
   req: Request,
@@ -68,10 +73,47 @@ export const updateInventory = async (
         existingInventory.itemDescription,
       price: updateInventoryRequest.price || existingInventory.price,
       category: updateInventoryRequest.category || existingInventory.category,
+      inventoryImageId:
+        updateInventoryRequest.inventoryImageId ||
+        existingInventory.inventoryImageId,
     },
   });
 
   res.status(StatusCodes.OK).json(updatedInventory);
+};
+
+export const deleteInventory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const existingInventory = await db.inventory.findFirst({
+    where: {
+      id: req.params.inventoryId,
+    },
+  });
+
+  if (!existingInventory)
+    return throwError(
+      `Inventory with id ${req.params.inventoryId} does not exist`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  if (existingInventory.userId !== req.user.id)
+    return throwError(
+      `Inventory does not belong to user`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  db.inventory.delete({
+    where: {
+      id: req.params.inventoryId,
+    },
+  });
+
+  res.status(StatusCodes.OK).json({});
 };
 
 export const getInventory = async (
@@ -79,16 +121,28 @@ export const getInventory = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userInventory = await db.inventory.findMany({
+  const userInventoryList = await db.inventory.findMany({
     where: {
       userId: req.user.id,
     },
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      saleTransaction: true,
+    },
   });
 
-  res.status(StatusCodes.OK).json(userInventory);
+  const userInventoryResponse: UserInventoryResponse[] = userInventoryList.map(
+    (inventory) => {
+      return {
+        onSale: !!inventory.saleTransaction.length,
+        ...inventory,
+      };
+    }
+  );
+
+  res.status(StatusCodes.OK).json(userInventoryResponse);
 };
 
 export const getInventoryById = async (
@@ -150,15 +204,34 @@ export const sellInventory = async (
   if (existingTransaction)
     return throwError(`Item already on sale`, StatusCodes.BAD_REQUEST, next);
 
-  const newTransaction = await db.transaction.create({
+  const existingInventory = await db.inventory.findFirst({
+    where: {
+      id: saleInventoryId,
+    },
+  });
+
+  if (!existingInventory)
+    return throwError(`Item not found`, StatusCodes.BAD_REQUEST, next);
+
+  const newTransaction: Transaction = await db.transaction.create({
     data: {
       status: TransactionStatus.ONSALE,
       type: TransactionType.SALE_BUY,
       sellerId: req.user.id,
       saleInventoryId,
+      coin: existingInventory.price,
     },
   });
+
   res.status(StatusCodes.OK).json(newTransaction);
+};
+
+export const archiveInventory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.status(StatusCodes.OK).json({});
 };
 
 export const buyInventory = async (
@@ -179,6 +252,25 @@ export const buyInventory = async (
       StatusCodes.BAD_REQUEST,
       next
     );
+
+  const buyerBalance = await db.user.findFirst({
+    where: {
+      id: req.user.id,
+    },
+    select: {
+      coin: true,
+    },
+  });
+
+  if (buyerBalance && buyerBalance.coin < existingInventory.price)
+    return throwError(
+      `Don't have enough balance`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  if (!existingInventory.userId)
+    return throwError(`Item not for sale`, StatusCodes.BAD_REQUEST, next);
 
   if (existingInventory.userId === req.user.id)
     return throwError(
@@ -225,6 +317,7 @@ export const buyInventory = async (
         price: existingInventory.price,
         userId: req.user.id,
         category: existingInventory.category,
+        inventoryImageId: existingInventory.inventoryImageId,
       },
     }),
     db.inventory.update({
@@ -233,6 +326,26 @@ export const buyInventory = async (
       },
       data: {
         userId: null,
+      },
+    }),
+    db.user.update({
+      where: {
+        id: existingInventory.userId,
+      },
+      data: {
+        coin: {
+          increment: existingInventory.price,
+        },
+      },
+    }),
+    db.user.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        coin: {
+          decrement: existingInventory.price,
+        },
       },
     }),
   ]);

@@ -1,6 +1,5 @@
-import { authenticate, isAdmin } from "../middleware/auth.middleware";
-import withErrorHandling from "../middleware/handleAsync";
-import { listUsers } from "../controller/user.controller";
+import { listUsers } from "@app/controller";
+import { authenticate, isAdmin, withErrorHandling } from "@app/middleware";
 
 const express = require("express");
 export const userRoute = express.Router();

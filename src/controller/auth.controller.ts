@@ -4,13 +4,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { AvatarGenerator } from "random-avatar-generator";
+import { db } from "@app/common";
 import {
   LoginRequest,
   LoginRequestSchema,
   SignupRequest,
   SignupRequestSchema,
-} from "../model/auth.model";
-import { db } from "../common";
+} from "@app/model";
 
 const generator = new AvatarGenerator();
 

@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { logger } from "../common";
 
-const apiLogger = async (req: Request, res: Response, next: NextFunction) => {
+export const apiLogger = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.info(
     `${req.method} ${req.url}${
       Object.keys(req.params).length > 0
@@ -15,5 +19,3 @@ const apiLogger = async (req: Request, res: Response, next: NextFunction) => {
   );
   next();
 };
-
-export default apiLogger;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-const withErrorHandling =
+export const withErrorHandling =
   (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -9,5 +9,3 @@ const withErrorHandling =
       next(error);
     }
   };
-
-export default withErrorHandling;

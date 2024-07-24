@@ -3,11 +3,9 @@ require("dotenv").config();
 import cors, { CorsOptions } from "cors";
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
-import apiLogger from "./middleware/logger.middleware";
-import { inventoryRouter } from "./routes";
-import { logger } from "./common";
-import { errorHandler } from "./middleware";
-import { userRoute, authRoute } from "./routes";
+import { logger } from "@app/common";
+import { apiLogger, errorHandler } from "@app/middleware";
+import { userRoute, authRoute, inventoryRouter } from "@app/routes";
 
 const app: Application = express();
 const url = `${process.env.BASE_URL}:${process.env.PORT}`;
