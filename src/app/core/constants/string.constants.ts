@@ -13,6 +13,7 @@ export const Validation = {
 
 export const ModalId = {
   INVENTORY_CREATE_EDIT: 'inventory-create-edit',
+  STORE_ITEM_DETAIL: 'store-item-detail',
 };
 
 export const CategoryMenuData = [

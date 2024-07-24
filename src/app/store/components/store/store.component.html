@@ -3,5 +3,12 @@
     *ngFor="let item of itemList; trackBy: getIdTracking; index as i"
     [item]="item"
     [index]="i"
+    (onClick)="openItemDetails($event)"
   ></app-item-card>
 </div>
+<ng-template #itemDetail>
+  <app-item-detail
+    (onBuy)="onBuy($event)"
+    (onAddToWishlist)="onAddWishlist($event)"
+  ></app-item-detail>
+</ng-template>

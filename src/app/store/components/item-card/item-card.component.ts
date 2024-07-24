@@ -11,13 +11,7 @@ import { StoreService } from '@app/store/service';
 @Component({
   selector: 'app-item-card',
   standalone: true,
-  imports: [
-    MatCardModule,
-    NgOptimizedImage,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-  ],
+  imports: [MatCardModule, NgOptimizedImage, MatButtonModule, MatIconModule],
   templateUrl: './item-card.component.html',
   styleUrl: './item-card.component.scss',
 })
@@ -28,33 +22,9 @@ export class ItemCardComponent {
 
   @Input() index: number = 0;
 
-  @Output() onBuy = new EventEmitter<string>();
-
-  @Output() onAddToWishlist = new EventEmitter<string>();
-
-  constructor(
-    private storeService: StoreService,
-    private matDialogService: MatDialog,
-    private overlay: Overlay,
-  ) {}
+  @Output() onClick = new EventEmitter<UserInventory>();
 
   getImageUrl = () => getInventoryImageUrl(this.item.inventoryImageId);
 
-  openItemDetails = () => {};
-
-  onBuyq = () => {
-    // this.storeService.setInventoryData({} as InventoryData, Action.ADD);
-    // this.openModalFromRight();
-  };
-
-  onAddWishlist = (inventoryId: string) => {
-    // this.inventoryService.setInventoryData(editInventory, Action.EDIT);
-    // this.openModalFromRight();
-  };
-  
-  onBuyButtonClicked = () => this.onBuy.emit(this.item.id);
-
-  onWishlistButtonClicked = () => this.onAddToWishlist.emit(this.item.id);
-
-  userCanBuy = () => {};
+  openItemDetails = () => this.onClick.emit(this.item);
 }
