@@ -8,6 +8,7 @@ export interface UserInventory {
   inventoryImageId: string;
   createdAt: Date;
   updatedAt: Date;
+  onSale: boolean;
 }
 
 export interface InventoryData extends UserInventory {

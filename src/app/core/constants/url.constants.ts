@@ -6,8 +6,12 @@ export const API = {
   CREATE_INVENTORY: '/api/v1/inventory/create',
   UPDATE_INVENTORY: '/api/v1/inventory/update/:inventoryId',
   GET_INVENTORY_DETAIL: '/api/v1/inventory/:inventoryId',
+  SELL_INVENTORY: '/api/v1/inventory/sell/:inventoryId',
+  ARCHIVE_INVENTORY: '/api/v1/inventory/archive/:inventoryId',
+  DELETE_INVENTORY: '/api/v1/inventory/delete/:inventoryId',
   UPLOAD_INVENTORY_IMAGE: '/api/v1/inventory/upload',
   GET_INVENTORY_IMAGE: '/api/v1/inventory/image/:inventoryImageId',
+  GET_STORE_DATA: '/api/v1/inventory/store',
 };
 
 export const Routes = {

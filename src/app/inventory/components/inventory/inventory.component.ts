@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Action, InventoryData, ModalId, UserInventory } from '@app/core';
+import { Action, InventoryData, ModalId, NEG_ONE, UserInventory } from '@app/core';
 import { InventoryService, InventoryFormComponent } from '@app/inventory';
 import { ItemCardComponent } from '../item-card';
 import { Overlay } from '@angular/cdk/overlay';
@@ -56,6 +56,23 @@ export class InventoryComponent implements OnInit {
     this.inventoryService.setInventoryData(editInventory, Action.EDIT);
     this.openModalFromRight();
   };
+
+  onSell = (inventoryId: string) => {
+    this.inventoryService.sellUserInventory(inventoryId).subscribe({
+      next: () => {
+        const index = this.userInventory.findIndex(
+          (inventory) => inventory.id == inventoryId,
+        );
+
+        if (index !== NEG_ONE)
+          this.userInventory[index].onSale = true;
+      },
+    });
+  };
+
+  onUnlistSale = (inventoryId: string) => {};
+
+  onDelete = (inventoryId: string) => {};
 
   openModalFromRight = () => {
     this.matDialogService

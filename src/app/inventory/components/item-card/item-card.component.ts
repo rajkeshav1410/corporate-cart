@@ -28,16 +28,23 @@ export class ItemCardComponent implements OnInit {
 
   @Output() onEdit = new EventEmitter<UserInventory>();
 
+  @Output() onSell = new EventEmitter<string>();
+
+  @Output() onUnlistSale = new EventEmitter<string>();
+
+  @Output() onDelete = new EventEmitter<string>();
+
   ngOnInit(): void {
     // console.log(this.item);
   }
 
-  // getInventoryImageUrl = () =>
-  //   getUrl(API.GET_INVENTORY_IMAGE, {
-  //     inventoryImageId: this.item.inventoryImageId || 'default',
-  //   });
-
   getImageUrl = () => getInventoryImageUrl(this.item.inventoryImageId);
 
   onEditButtonClicked = () => this.onEdit.emit(this.item);
+
+  onSellButtonClicked = () => this.onSell.emit(this.item.id);
+
+  onUnlistSaleButtonClicked = () => this.onUnlistSale.emit(this.item.id);
+  
+  onDeleteButtonClicked = () => this.onDelete.emit(this.item.id);
 }

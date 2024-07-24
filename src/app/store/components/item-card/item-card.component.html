@@ -1,0 +1,27 @@
+<mat-card
+  appearance="outlined"
+  class="item-card mat-typography"
+  (click)="openItemDetails()"
+>
+  <mat-card-content>
+    <div class="item-detail-container">
+      <div class="image-wrapper">
+        <img
+          ngSrc="{{ getImageUrl() }}"
+          class="item-card-image"
+          [placeholder]="placeholder"
+          [priority]="index < 5"
+          fill
+        />
+      </div>
+      <div class="detail">
+        <div class="title">
+          {{ this.item.itemName }}
+        </div>
+        <div class="price">
+          <mat-icon mat-list-icon>currency_rupee</mat-icon>{{ this.item.price }}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

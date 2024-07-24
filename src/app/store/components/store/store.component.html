@@ -1,1 +1,7 @@
-<p>store works!</p>
+<div class="store-contatiner">
+  <app-item-card
+    *ngFor="let item of itemList; trackBy: getIdTracking; index as i"
+    [item]="item"
+    [index]="i"
+  ></app-item-card>
+</div>

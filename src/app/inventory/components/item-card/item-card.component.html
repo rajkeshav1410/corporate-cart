@@ -19,20 +19,25 @@
       </div>
       <div class="control-wrapper">
         <div class="controls">
-          <button mat-icon-button>
+          <button mat-icon-button [disabled]="!item.onSale" (click)="onUnlistSaleButtonClicked()">
             <mat-icon>archive</mat-icon>
           </button>
           <button mat-icon-button (click)="onEditButtonClicked()">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button>
+          <button mat-icon-button (click)="onDeleteButtonClicked()">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
         <div class="price">
           <mat-icon mat-list-icon>currency_rupee</mat-icon>{{ this.item.price }}
         </div>
-        <button mat-stroked-button class="sell-button">
+        <button
+          mat-stroked-button
+          class="sell-button"
+          [disabled]="item.onSale"
+          (click)="onSellButtonClicked()"
+        >
           <mat-icon mat-list-icon>unarchive</mat-icon>
           Sell
         </button>

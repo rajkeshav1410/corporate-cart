@@ -4,6 +4,9 @@
     [item]="item"
     [index]="i"
     (onEdit)="onEdit($event)"
+    (onDelete)="onDelete($event)"
+    (onSell)="onSell($event)"
+    (onUnlistSale)="onUnlistSale($event)"
   ></app-item-card>
   <button mat-fab class="create-button" (click)="onAddClick()">
     <mat-icon mat-list-icon>add</mat-icon>

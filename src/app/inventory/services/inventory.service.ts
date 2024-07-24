@@ -6,6 +6,7 @@ import {
   CreateInventoryRequest,
   getUrl,
   InventoryData,
+  Transaction,
   UserInventory,
 } from '@app/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -30,6 +31,18 @@ export class InventoryService {
     inventory: CreateInventoryRequest,
     inventoryId: string,
   ) => this.http.post(getUrl(API.UPDATE_INVENTORY, { inventoryId }), inventory);
+
+  sellUserInventory = (inventoryId: string): Observable<Transaction> =>
+    this.http.post<Transaction>(
+      getUrl(API.SELL_INVENTORY, { inventoryId }),
+      null,
+    );
+
+  archiveUserInventory = (inventoryId: string) =>
+    this.http.post(getUrl(API.ARCHIVE_INVENTORY, { inventoryId }), null);
+
+  deleteUserInventory = (inventoryId: string) =>
+    this.http.post(getUrl(API.DELETE_INVENTORY, { inventoryId }), null);
 
   uploadImage = (file: File, inventoryImageId: string): void => {
     const formData = new FormData();
