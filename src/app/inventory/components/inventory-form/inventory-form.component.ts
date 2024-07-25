@@ -146,7 +146,6 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
 
   onSubmit = () => {
     const categeoryId = this.inventoryForm.get('category')?.value;
-    console.log(categeoryId);
     const requestBody: CreateInventoryRequest = {
       itemName:
         this.inventoryForm.get('title')?.value || this.inventory.itemName,
@@ -161,8 +160,6 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       inventoryImageId: '',
     };
     let inventoryImageId, callFn;
-
-    console.log(requestBody);
 
     if (this.formAction === Action.ADD) {
       inventoryImageId = crypto.randomUUID();

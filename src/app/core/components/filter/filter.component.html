@@ -1,0 +1,97 @@
+<div mat-dialog-title class="dialog-title">
+  <h3 class="title mat-typography">Filter</h3>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="filter-form-wrapper">
+  <mat-dialog-content class="mat-typography filter-dialog-container">
+    <form [formGroup]="filterForm" class="filter-form">
+      <div class="controls">
+        <div class="search-component">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Search</mat-label>
+            <input
+              matInput
+              placeholder="Search a product"
+              formControlName="search"
+              class="search-value"
+            />
+            <mat-select
+              matSuffix
+              formControlName="searchKey"
+              class="search-key"
+            >
+              <mat-option
+                *ngFor="let searchKey of searchKeyList; trackBy: categoryIndex"
+                [value]="searchKey.viewValue"
+                >{{ searchKey.viewValue }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Select category</mat-label>
+          <mat-select formControlName="categories" multiple>
+            <mat-select-trigger>
+              <mat-chip-listbox>
+                <mat-chip
+                  *ngFor="let category of filterForm.controls.categories.value"
+                  [removable]="true"
+                  (removed)="removeCategory(category)"
+                >
+                  {{ category }}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-listbox>
+            </mat-select-trigger>
+
+            <mat-option
+              *ngFor="let category of categoryList; trackBy: categoryIndex"
+              [value]="category.viewValue"
+              >{{ category.viewValue }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <div class="price">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Min price</mat-label>
+            <input matInput placeholder="" formControlName="priceMin" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Max price</mat-label>
+            <input matInput placeholder="" formControlName="priceMax" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker appearance="outline"></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
+<mat-dialog-actions>
+  <button mat-flat-button class="button" (click)="onClearFilter()">
+    Clear
+  </button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    class="button"
+    (click)="onApplyFilter()"
+  >
+    Apply
+  </button>
+</mat-dialog-actions>

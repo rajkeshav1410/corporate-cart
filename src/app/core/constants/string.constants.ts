@@ -17,6 +17,7 @@ export const Validation = {
 export const ModalId = {
   INVENTORY_CREATE_EDIT: 'inventory-create-edit',
   STORE_ITEM_DETAIL: 'store-item-detail',
+  FILTER: 'filter',
 };
 
 export const CategoryMenuData = [
@@ -70,4 +71,10 @@ export const CategoryMenuData = [
   { value: 'category_48', viewValue: 'Vintage Clothing' },
   { value: 'category_49', viewValue: 'Specialty Foods' },
   { value: 'category_50', viewValue: 'Subscription Services' },
+];
+
+export const SeachKeyMenuData = [
+  { value: 'Product title', viewValue: 'Product title' },
+  { value: 'Product description', viewValue: 'Product description' },
+  { value: 'Seller name or email', viewValue: 'Seller name or email' },
 ];

@@ -1,10 +1,13 @@
 <div class="store-contatiner">
   <app-item-card
-    *ngFor="let item of itemList; trackBy: getIdTracking; index as i"
+    *ngFor="let item of filteredItemList; trackBy: getIdTracking; index as i"
     [item]="item"
     [index]="i"
     (onClick)="openItemDetails($event)"
   ></app-item-card>
+  <button mat-fab class="filter-button" (click)="openFilterModal()">
+    <mat-icon mat-list-icon>tune</mat-icon>
+  </button>
 </div>
 <ng-template #itemDetail>
   <app-item-detail
