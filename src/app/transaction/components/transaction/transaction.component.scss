@@ -1,0 +1,10 @@
+.transaction-contatiner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px;
+
+  .transaction-table {
+    width: 100%;
+  }
+}

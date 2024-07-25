@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TransactionService {
-  private _transactionData = new BehaviorSubject({} as Transaction);
+  private _transactionData = new BehaviorSubject<Transaction[]>([]);
 
   public readonly transactionData = this._transactionData.asObservable();
 
@@ -16,5 +16,6 @@ export class TransactionService {
   getTransactions = (): Observable<Transaction[]> =>
     this.http.post<Transaction[]>(API.GET_TRANSACTION_DATA, {});
 
-  setTransactionData = (data: Transaction) => this._transactionData.next(data);
+  setTransactionData = (data: Transaction[]) =>
+    this._transactionData.next(data);
 }

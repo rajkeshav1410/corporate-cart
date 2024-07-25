@@ -18,6 +18,17 @@ export interface Transaction {
   tradeInventory: UserInventory | null;
 }
 
+export interface TransactionTableView {
+  transaction: Transaction;
+  type: string;
+  date: string;
+  item: string;
+  buyer: string;
+  seller: string;
+  price: string;
+  status: string;
+}
+
 export enum TransactionType {
   SALE_BUY,
   TRADE,

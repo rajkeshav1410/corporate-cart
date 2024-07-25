@@ -22,6 +22,7 @@ import {
 } from '@app/core';
 import { StoreService } from '@app/store';
 import { Subject, takeUntil } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-item-detail',
@@ -35,7 +36,8 @@ import { Subject, takeUntil } from 'rxjs';
     NgOptimizedImage,
     NgIf,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule,
   ],
   templateUrl: './item-detail.component.html',
   styleUrl: './item-detail.component.scss',
@@ -78,5 +80,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   onWishlistButtonClicked = () => this.onAddToWishlist.emit(this.item.id);
 
-  userCanBuy = () => {};
+  getWishlistTooltip = () => {
+    return 'Add to wishlist';
+  };
 }

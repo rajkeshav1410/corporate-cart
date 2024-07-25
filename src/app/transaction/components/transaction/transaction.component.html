@@ -1,1 +1,13 @@
-<p>transaction works!</p>
+<div class="transaction-contatiner">
+  <ng-container *ngIf="inventoryView">
+    <app-item-card
+      [item]="inventoryView"
+      [isDetailView]="true"
+      (onClose)="onCloseInventoryView()"
+    ></app-item-card
+  ></ng-container>
+  <app-table
+    class="transaction-table"
+    (onClick)="onInventoryView($event)"
+  ></app-table>
+</div>

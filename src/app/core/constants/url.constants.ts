@@ -4,6 +4,7 @@ export const API = {
   LOGOUT: '/api/v1/auth/logout',
   PROFILE: 'api/v1/auth/me',
   GET_USER_INVENTORY: '/api/v1/inventory',
+  GET_INVENTORY: '/api/v1/inventory/:inventoryId',
   CREATE_INVENTORY: '/api/v1/inventory/create',
   UPDATE_INVENTORY: '/api/v1/inventory/update/:inventoryId',
   GET_INVENTORY_DETAIL: '/api/v1/inventory/:inventoryId',
@@ -14,7 +15,7 @@ export const API = {
   GET_INVENTORY_IMAGE: '/api/v1/inventory/image/:inventoryImageId',
   GET_STORE_DATA: '/api/v1/inventory/store',
   BUY_ITEM: '/api/v1/inventory/buy/:inventoryId',
-  GET_TRANSACTION_DATA: '/api/v1/inventory/transaction',
+  GET_TRANSACTION_DATA: '/api/v1/transaction',
 };
 
 export const Routes = {

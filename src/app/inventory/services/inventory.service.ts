@@ -27,6 +27,9 @@ export class InventoryService {
   getUserInventory = (): Observable<UserInventory[]> =>
     this.http.get<UserInventory[]>(API.GET_USER_INVENTORY);
 
+  getInventory = (inventoryId: string): Observable<UserInventory> =>
+    this.http.get<UserInventory>(getUrl(API.GET_INVENTORY, { inventoryId }));
+
   updateUserInventory = (
     inventory: CreateInventoryRequest,
     inventoryId: string,

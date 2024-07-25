@@ -19,15 +19,45 @@
       </div>
       <div class="control-wrapper">
         <div class="controls">
-          <button mat-icon-button [disabled]="!item.onSale" (click)="onUnlistSaleButtonClicked()">
+          <button
+            mat-icon-button
+            matTooltip="Unlist form sale"
+            [matTooltipPosition]="'above'"
+            [disabled]="!item.onSale || isDetailView"
+            (click)="onUnlistSaleButtonClicked()"
+          >
             <mat-icon>archive</mat-icon>
           </button>
-          <button mat-icon-button (click)="onEditButtonClicked()">
+          <button
+            mat-icon-button
+            matTooltip="Edit item"
+            [matTooltipPosition]="'above'"
+            [disabled]="isDetailView"
+            (click)="onEditButtonClicked()"
+          >
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDeleteButtonClicked()">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <ng-container *ngIf="!isDetailView; else closeButton">
+            <button
+              mat-icon-button
+              matTooltip="Delete item"
+              [matTooltipPosition]="'above'"
+              (click)="onDeleteButtonClicked()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #closeButton>
+            <button
+              mat-icon-button
+              matTooltip="Close view"
+              [matTooltipPosition]="'above'"
+              (click)="onCloseButtonClicked()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </ng-template>
         </div>
         <div class="price">
           <mat-icon mat-list-icon>currency_rupee</mat-icon>{{ this.item.price }}
@@ -35,7 +65,7 @@
         <button
           mat-stroked-button
           class="sell-button"
-          [disabled]="item.onSale"
+          [disabled]="item.onSale || isDetailView"
           (click)="onSellButtonClicked()"
         >
           <mat-icon mat-list-icon>unarchive</mat-icon>

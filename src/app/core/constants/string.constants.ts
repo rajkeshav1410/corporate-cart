@@ -1,4 +1,6 @@
 export const EMPTY_STRING = '';
+export const HYPHN_STRING = '_';
+export const SPACE_STRING = ' ';
 export const ZERO_STRING = '0';
 export const ZERO = 0;
 export const NEG_ONE = -1;

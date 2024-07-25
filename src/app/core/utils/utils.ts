@@ -1,14 +1,24 @@
-import { API, CategoryMenuData, Param } from '@app/core';
+import { API, CategoryMenuData, Param, SPACE_STRING } from '@app/core';
 
 export const transformName = (fullName: string) => {
-  const names = fullName.split(' ');
-  const firstName =
-    names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase();
-  const lastName =
-    names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
+  // const names = fullName.split(' ');
+  // const firstName =
+  //   names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase();
+  // const lastName =
+  //   names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
+
+  const [firstName, lastName] = capitalize(fullName).split(SPACE_STRING);
   const transformedName = `${lastName}, ${firstName}`;
   return transformedName;
 };
+
+export const capitalize = (text: string, seperator = SPACE_STRING) =>
+  text
+    .split(seperator)
+    .map(
+      (parts) => parts.charAt(0).toUpperCase() + parts.slice(1).toLowerCase(),
+    )
+    .join(SPACE_STRING);
 
 export const getUrl = (baseURL: string, params: Param): string => {
   let modifiedURL: string = baseURL;

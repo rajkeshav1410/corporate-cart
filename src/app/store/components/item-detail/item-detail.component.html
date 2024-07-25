@@ -18,10 +18,20 @@
       </div>
       <div class="control-wrapper">
         <div class="controls">
-          <button mat-icon-button (click)="onWishlistButtonClicked()">
+          <button
+            mat-icon-button
+            [matTooltip]="getWishlistTooltip()"
+            [matTooltipPosition]="'above'"
+            (click)="onWishlistButtonClicked()"
+          >
             <mat-icon>favorite</mat-icon>
           </button>
-          <button mat-icon-button mat-dialog-close>
+          <button
+            mat-icon-button
+            matTooltip="Close"
+            [matTooltipPosition]="'above'"
+            mat-dialog-close
+          >
             <mat-icon>close</mat-icon>
           </button>
         </div>
