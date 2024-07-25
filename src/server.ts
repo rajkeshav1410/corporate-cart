@@ -5,7 +5,12 @@ import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import { logger } from "@app/common";
 import { apiLogger, errorHandler } from "@app/middleware";
-import { userRoute, authRoute, inventoryRouter } from "@app/routes";
+import {
+  userRoute,
+  authRoute,
+  inventoryRouter,
+  transactionRouter,
+} from "@app/routes";
 
 const app: Application = express();
 const url = `${process.env.BASE_URL}:${process.env.PORT}`;
@@ -24,8 +29,7 @@ app.use(apiLogger);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/inventory", inventoryRouter);
-// app.use("/api/v1/legend", legendRoute);
-// app.use("/api/v1/work", workRoute);
+app.use("/api/v1/transaction", transactionRouter);
 
 app.use(errorHandler);
 
