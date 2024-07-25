@@ -12,12 +12,17 @@ export class NotificationService {
     public dialog: MatDialog,
   ) {}
 
-  success(message: string) {
-    this.openSnackBar(message, '', 'success-snackbar');
+  success(message: string, duration?: number) {
+    this.openSnackBar(
+      message,
+      '',
+      'success-snackbar',
+      duration ?? NOTIF_TIMEOUT,
+    );
   }
 
-  error(message: string) {
-    this.openSnackBar(message, '', 'error-snackbar');
+  error(message: string, duration?: number) {
+    this.openSnackBar(message, '', 'error-snackbar', duration ?? NOTIF_TIMEOUT);
   }
 
   openSnackBar(

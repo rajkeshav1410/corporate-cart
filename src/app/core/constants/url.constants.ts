@@ -14,6 +14,7 @@ export const API = {
   GET_INVENTORY_IMAGE: '/api/v1/inventory/image/:inventoryImageId',
   GET_STORE_DATA: '/api/v1/inventory/store',
   BUY_ITEM: '/api/v1/inventory/buy/:inventoryId',
+  GET_TRANSACTION_DATA: '/api/v1/inventory/transaction',
 };
 
 export const Routes = {

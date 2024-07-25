@@ -1,14 +1,21 @@
+import { UserInventory } from './inventory.model';
+import { AuthUser } from './user.model';
+
 export interface Transaction {
   id: string;
   type: TransactionType;
   status: TransactionStatus;
-  coin?: number;
+  coin: number;
   sellerId: string;
-  buyerId?: string;
+  buyerId: string;
   saleInventoryId: string;
-  tradeInventoryId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  tradeInventoryId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  buyer: AuthUser;
+  seller: AuthUser;
+  saleInventory: UserInventory;
+  tradeInventory: UserInventory | null;
 }
 
 export enum TransactionType {

@@ -53,19 +53,14 @@ export class StoreComponent implements OnInit {
 
   openItemDetails = (data: UserInventory) => {
     this.storeService.setStoreData(data);
-    this.matDialogService
-      .open(this.itemDetail, {
-        id: ModalId.STORE_ITEM_DETAIL,
-        height: '23rem',
-        width: '50rem',
-        maxWidth: '50rem',
-        panelClass: ['custom-dialog-nobg'],
-        scrollStrategy: this.overlay.scrollStrategies.noop(),
-      })
-      .afterClosed()
-      .subscribe({
-        next: () => this.fetchStoreData(),
-      });
+    this.matDialogService.open(this.itemDetail, {
+      id: ModalId.STORE_ITEM_DETAIL,
+      height: '23rem',
+      width: '50rem',
+      maxWidth: '50rem',
+      panelClass: ['custom-dialog-nobg'],
+      scrollStrategy: this.overlay.scrollStrategies.noop(),
+    });
   };
 
   onBuy = (inventory: UserInventory) => {
@@ -74,7 +69,7 @@ export class StoreComponent implements OnInit {
     const userCoin = this.storageService.getUser()?.coin || 0;
     if (userCoin < inventory.price) {
       this.notificationService.error(
-        "You don't have enough coin to puchase this item!",
+        "You don't have enough coin to purchase this item!",
       );
       return;
     }
@@ -82,7 +77,7 @@ export class StoreComponent implements OnInit {
     this.storeService.buyItem(inventory.id).subscribe({
       next: () => {
         this.notificationService.success(
-          'Congratulations! now you own this item',
+          'Congratulations🎉 now you own this item',
         );
         this.fetchStoreData();
         this.storageService.refreshUser();
