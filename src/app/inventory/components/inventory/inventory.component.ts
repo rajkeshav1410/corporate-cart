@@ -31,8 +31,10 @@ import { Overlay } from '@angular/cdk/overlay';
   styleUrl: './inventory.component.scss',
 })
 export class InventoryComponent implements OnInit {
+  // Array to store user's inventory items
   userInventory!: UserInventory[];
 
+  // Placeholder for file input data
   file!: File;
 
   constructor(
@@ -46,6 +48,9 @@ export class InventoryComponent implements OnInit {
     this.fetchInventoryData();
   }
 
+  /**
+   * Fetches the user's inventory data from the service.
+   */
   fetchInventoryData = () =>
     this.inventoryService.getUserInventory().subscribe({
       next: (response) => {
@@ -59,19 +64,22 @@ export class InventoryComponent implements OnInit {
    * Gets the trackable index for the template
    * @param {number} index - Index value from ngFor.
    * @param {UserInventory} item - Object ref from ngFor
-   * @returns - Trackable element index
+   * @returns {number} - Trackable element index
    */
   public getIdTracking = (index: number, item: UserInventory) => {
     return item.id;
   };
 
+  /**
+   * Handles the click event for adding a new inventory item.
+   */
   onAddClick = () => {
     this.inventoryService.setInventoryData({} as InventoryData, Action.ADD);
     this.openModalFromRight();
   };
 
   /**
-   * Pushes inventory data to service and loads inventory edit form
+   * Prepares for editing the selected inventory item.
    * @param {UserInventory} editInventory - Inventory to edit.
    */
   onEdit = (editInventory: UserInventory) => {
@@ -79,23 +87,33 @@ export class InventoryComponent implements OnInit {
     this.openModalFromRight();
   };
 
+  /**
+   * Initiates the selling process for a specific inventory item.
+   * @param {string} inventoryId - The ID of the inventory to sell.
+   */
   onSell = (inventoryId: string) => {
     this.inventoryService.sellUserInventory(inventoryId).subscribe({
       next: () => {
         const index = this.userInventory.findIndex(
           (inventory) => inventory.id == inventoryId,
         );
-
         if (index !== NumberConstants.NEG_ONE)
           this.userInventory[index].onSale = true;
-
         this.notificationService.success('Your item is on sale now');
       },
     });
   };
 
+  /**
+   * Handles unlisting an item from sale.
+   * @param {string} inventoryId - The ID of the inventory to unlist.
+   */
   onUnlistSale = (inventoryId: string) => {};
 
+  /**
+   * Deletes a specific inventory item.
+   * @param {string} inventoryId - The ID of the inventory to delete.
+   */
   onDelete = (inventoryId: string) => {
     this.inventoryService.deleteUserInventory(inventoryId).subscribe({
       next: () => {
@@ -111,6 +129,9 @@ export class InventoryComponent implements OnInit {
     });
   };
 
+  /**
+   * Opens a modal dialog for adding/editing inventory items from the right side.
+   */
   openModalFromRight = () => {
     this.matDialogService
       .open(InventoryFormComponent, {

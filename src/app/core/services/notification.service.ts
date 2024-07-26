@@ -12,6 +12,11 @@ export class NotificationService {
     public dialog: MatDialog,
   ) {}
 
+  /**
+   * Displays a success notification message.
+   * @param {string} message - The success message to display.
+   * @param {number} duration - (Optional) The duration for the notification display.
+   */
   success(message: string, duration?: number) {
     this.openSnackBar(
       message,
@@ -21,6 +26,11 @@ export class NotificationService {
     );
   }
 
+  /**
+   * Displays an error notification message.
+   * @param {string} message - The error message to display.
+   * @param {number} duration - (Optional) The duration for the notification display.
+   */
   error(message: string, duration?: number) {
     this.openSnackBar(
       message,
@@ -30,6 +40,13 @@ export class NotificationService {
     );
   }
 
+  /**
+   * Opens a snack bar notification with the provided settings.
+   * @param {string} message - The message to display in the snack bar.
+   * @param {string} action - The action text for the snack bar (e.g., button text).
+   * @param {string} className - (Optional) Additional CSS class for styling the snack bar.
+   * @param {number} duration - (Optional) The duration for the notification display.
+   */
   openSnackBar(
     message: string,
     action: string,

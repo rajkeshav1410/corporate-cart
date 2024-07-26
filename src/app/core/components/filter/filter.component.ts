@@ -48,12 +48,16 @@ import { FilterType } from '@app/core/models/filter.model';
   styleUrl: './filter.component.scss',
 })
 export class FilterComponent implements OnInit, OnDestroy {
+  // List of categories for filtering
   categoryList: MenuItem[] = CategoryMenuData;
 
+  // List of search keys for filtering
   searchKeyList: MenuItem[] = SeachKeyMenuData;
 
+  // Default search key
   defaultSearchKey: string = 'Product title';
 
+  // Form group for filtering
   filterForm = new FormGroup({
     search: new FormControl('', [Validators.maxLength(40)]),
     searchKey: new FormControl(this.defaultSearchKey),
@@ -63,8 +67,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     date: new FormControl(''),
   });
 
+  // Filter data object
   filter!: FilterType;
 
+  // Subject to manage component destruction
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
@@ -72,6 +78,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     private matDialogService: MatDialog,
   ) {}
 
+  /**
+   * Initialization lifecycle hook
+   */
   ngOnInit(): void {
     this.filterService.filterData.pipe(takeUntil(this.onDestroy$)).subscribe({
       next: (data: FilterType) => {
@@ -81,14 +90,22 @@ export class FilterComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Clean up before component destruction
+   */
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
 
+  // Close modal dialog
   closeModal = () =>
     this.matDialogService.getDialogById(ModalId.FILTER)?.close();
 
+  /**
+   * Load form data with existing filter values
+   * @param data - Filter data to load into the form
+   */
   loadForm = (data: FilterType) => {
     this.filterForm.setValue({
       search: data.search || '',
@@ -100,14 +117,24 @@ export class FilterComponent implements OnInit, OnDestroy {
     });
   };
 
+  /**
+   * Remove a category from the filter
+   * @param category - Category to remove
+   */
   removeCategory = (category: string) => {
     const categories = this.filterForm.controls.categories.value as string[];
     this.removeFirst(categories, category);
     this.filterForm.controls.categories.setValue(categories);
   };
 
+  /**
+   * Get the index of the category
+   * @param index - Category index
+   * @returns Index value
+   */
   categoryIndex = (index: number) => index;
 
+  // Remove the first occurrence of an item from an array
   private removeFirst<T>(array: T[], toRemove: T): void {
     const index = array.indexOf(toRemove);
     if (index !== -1) {
@@ -115,6 +142,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Apply the filter and set filter data
+   */
   onApplyFilter = () => {
     this.filterService.setFilterData({
       search: this.filterForm.controls.search.value || '',
@@ -129,6 +159,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.closeModal();
   };
 
+  /**
+   * Clear the filter form
+   */
   onClearFilter = () => {
     this.filterForm.reset({ searchKey: this.defaultSearchKey });
   };

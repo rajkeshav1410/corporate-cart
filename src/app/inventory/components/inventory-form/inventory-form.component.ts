@@ -121,7 +121,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  // Close modal dialog
+  /**
+   * Close modal dialog
+   */
   closeModal = () =>
     this.matDialogService.getDialogById(ModalId.INVENTORY_CREATE_EDIT)?.close();
 

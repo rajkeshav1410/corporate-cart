@@ -32,13 +32,16 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  // Form group for login details
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl(''),
   });
 
+  // Flag to toggle password visibility
   hide: boolean = true;
 
+  // Error message holder
   error: string = '';
 
   constructor(
@@ -48,14 +51,23 @@ export class LoginComponent implements OnInit {
     private router: Router,
   ) {}
 
+  /**
+   * Initialization lifecycle hook
+   */
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) this.router.navigate(['']);
   }
 
+  /**
+   * Toggle password visibility
+   */
   togglePasswordVisibility = () => {
     this.hide = !this.hide;
   };
 
+  /**
+   * Handle form submission for login
+   */
   onSubmit = () => {
     const { email, password } = this.loginForm.value;
     this.error = '';

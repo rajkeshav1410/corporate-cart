@@ -29,8 +29,10 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  // Current user data
   currentUser!: AuthUser | null;
 
+  // Subject to manage component destruction
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
@@ -38,22 +40,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
   ) {}
 
+  /**
+   * Initialization lifecycle hook
+   */
   ngOnInit(): void {
     this.storageService.userData.pipe(takeUntil(this.onDestroy$)).subscribe({
       next: (user: AuthUser | null) => {
-        this.currentUser = user
+        this.currentUser = user;
       },
     });
 
-    if (this.storageService.isLoggedIn())
+    // Get the user if already logged in
+    if (this.storageService.isLoggedIn()) {
       this.currentUser = this.storageService.getUser();
+    }
   }
 
+  /**
+   * Clean up before component destruction
+   */
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
 
+  /**
+   * Logout user and clean up storage
+   */
   onLogout = () => {
     this.authService.logout().subscribe({
       next: () => {

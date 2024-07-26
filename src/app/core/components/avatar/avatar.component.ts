@@ -18,5 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './avatar.component.scss',
 })
 export class AvatarComponent {
+  // Input property for the user object
   @Input({ required: true }) user!: AuthUser;
 }

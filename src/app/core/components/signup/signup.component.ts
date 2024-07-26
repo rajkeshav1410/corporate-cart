@@ -30,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
+  //Signup form group with name, email, and password fields
   signupForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -44,20 +45,34 @@ export class SignupComponent {
     ]),
   });
 
+  // Controls password visibility
   hide: boolean = true;
 
+  // Error message displayed to the user
   error: string = '';
 
+  /**
+   * Constructor for SignupComponent
+   * @param authService - Authentication service
+   * @param storageService - Storage service
+   * @param location - Angular location service
+   */
   constructor(
     private authService: AuthService,
     private storageService: StorageService,
     private location: Location,
   ) {}
 
+  /**
+   * Toggle password visibility
+   */
   togglePasswordVisibility = () => {
     this.hide = !this.hide;
   };
 
+  /**
+   * Handle form submission
+   */
   onSubmit = () => {
     const { name, email, password } = this.signupForm.value;
     this.error = '';
@@ -80,6 +95,10 @@ export class SignupComponent {
     }
   };
 
+  /**
+   * Handle HTTP error responses
+   * @param {CustomHttpErrorResponse} error - Custom HTTP error response
+   */
   errorHandler = (error: CustomHttpErrorResponse) => {
     this.error = error.error.message;
   };
