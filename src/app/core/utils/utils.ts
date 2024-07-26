@@ -1,4 +1,10 @@
-import { API, CategoryMenuData, Param, SPACE_STRING } from '@app/core';
+import {
+  API,
+  CategoryMenuData,
+  CustomHttpErrorResponse,
+  Param,
+  StringConstants,
+} from '@app/core';
 
 export const transformName = (fullName: string) => {
   // const names = fullName.split(' ');
@@ -7,18 +13,23 @@ export const transformName = (fullName: string) => {
   // const lastName =
   //   names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
 
-  const [firstName, lastName] = capitalize(fullName).split(SPACE_STRING);
+  const [firstName, lastName] = capitalize(fullName).split(
+    StringConstants.SPACE_STRING,
+  );
   const transformedName = `${lastName}, ${firstName}`;
   return transformedName;
 };
 
-export const capitalize = (text: string, seperator = SPACE_STRING) =>
+export const capitalize = (
+  text: string,
+  seperator = StringConstants.SPACE_STRING,
+) =>
   text
     .split(seperator)
     .map(
       (parts) => parts.charAt(0).toUpperCase() + parts.slice(1).toLowerCase(),
     )
-    .join(SPACE_STRING);
+    .join(StringConstants.SPACE_STRING);
 
 export const getUrl = (baseURL: string, params: Param): string => {
   let modifiedURL: string = baseURL;
@@ -46,3 +57,8 @@ export const getCategoryIdByName = (categoryName: string) => {
   );
   return category ? category.value : 'Category not found';
 };
+
+export const getErrorMessage = (
+  error: CustomHttpErrorResponse,
+  message: string = StringConstants['error.common'],
+) => `${message} ${error.error.message}`;

@@ -1,14 +1,20 @@
-export const EMPTY_STRING = '';
-export const HYPHN_STRING = '_';
-export const SPACE_STRING = ' ';
-export const ZERO_STRING = '0';
-export const ZERO = 0;
-export const NEG_ONE = -1;
-export const NOTIF_TIMEOUT = 2000;
+export const StringConstants = {
+  EMPTY_STRING: '',
+  HYPHN_STRING: '_',
+  SPACE_STRING: ' ',
+  ZERO_STRING: '0',
+  USER_KEY: 'auth-user',
+  PLACEHOLDER: './public/default',
 
-export const USER_KEY = 'auth-user';
+  'error.common': 'Something went wrong!',
+};
 
-export const PLACEHOLDER = './public/default';
+export const NumberConstants = {
+  ONE: 1,
+  ZERO: 0,
+  NEG_ONE: -1,
+  NOTIF_TIMEOUT: 2000,
+};
 
 export const Validation = {
   numRegex: /^-?\d*[.,]?\d{0,2}$/,

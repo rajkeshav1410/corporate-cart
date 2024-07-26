@@ -3,7 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Action, InventoryData, ModalId, NEG_ONE, UserInventory } from '@app/core';
+import {
+  Action,
+  CustomHttpErrorResponse,
+  getErrorMessage,
+  InventoryData,
+  ModalId,
+  NumberConstants,
+  NotificationService,
+  UserInventory,
+} from '@app/core';
 import { InventoryService, InventoryFormComponent } from '@app/inventory';
 import { ItemCardComponent } from '../item-card';
 import { Overlay } from '@angular/cdk/overlay';
@@ -29,6 +38,7 @@ export class InventoryComponent implements OnInit {
   constructor(
     private inventoryService: InventoryService,
     private matDialogService: MatDialog,
+    private notificationService: NotificationService,
     private overlay: Overlay,
   ) {}
 
@@ -41,8 +51,16 @@ export class InventoryComponent implements OnInit {
       next: (response) => {
         this.userInventory = response;
       },
+      error: (error: CustomHttpErrorResponse) =>
+        this.notificationService.error(getErrorMessage(error)),
     });
 
+  /**
+   * Gets the trackable index for the template
+   * @param {number} index - Index value from ngFor.
+   * @param {UserInventory} item - Object ref from ngFor
+   * @returns - Trackable element index
+   */
   public getIdTracking = (index: number, item: UserInventory) => {
     return item.id;
   };
@@ -52,6 +70,10 @@ export class InventoryComponent implements OnInit {
     this.openModalFromRight();
   };
 
+  /**
+   * Pushes inventory data to service and loads inventory edit form
+   * @param {UserInventory} editInventory - Inventory to edit.
+   */
   onEdit = (editInventory: UserInventory) => {
     this.inventoryService.setInventoryData(editInventory, Action.EDIT);
     this.openModalFromRight();
@@ -64,15 +86,30 @@ export class InventoryComponent implements OnInit {
           (inventory) => inventory.id == inventoryId,
         );
 
-        if (index !== NEG_ONE)
+        if (index !== NumberConstants.NEG_ONE)
           this.userInventory[index].onSale = true;
+
+        this.notificationService.success('Your item is on sale now');
       },
     });
   };
 
   onUnlistSale = (inventoryId: string) => {};
 
-  onDelete = (inventoryId: string) => {};
+  onDelete = (inventoryId: string) => {
+    this.inventoryService.deleteUserInventory(inventoryId).subscribe({
+      next: () => {
+        const index = this.userInventory.findIndex(
+          (inventory) => inventory.id === inventoryId,
+        );
+        index !== NumberConstants.NEG_ONE &&
+          this.userInventory.splice(index, NumberConstants.ONE);
+        this.notificationService.success('Item deleted successfully');
+      },
+      error: (error: CustomHttpErrorResponse) =>
+        this.notificationService.error(getErrorMessage(error)),
+    });
+  };
 
   openModalFromRight = () => {
     this.matDialogService

@@ -14,8 +14,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {
   AuthUser,
   capitalize,
-  HYPHN_STRING,
   StorageService,
+  StringConstants,
   Transaction,
   TransactionTableView,
   transformName,
@@ -84,7 +84,10 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
           this.dataSource.data = this.transactionData.map((data) => {
             return {
               transaction: data,
-              type: capitalize(data.type.toString(), HYPHN_STRING),
+              type: capitalize(
+                data.type.toString(),
+                StringConstants.HYPHN_STRING,
+              ),
               date: this.datePipe.transform(data.updatedAt, 'dd/MM/yyyy HH:mm'),
               item: data.saleInventory.itemName,
               buyer: this.formatName(data.buyer),

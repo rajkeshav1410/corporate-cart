@@ -23,6 +23,7 @@ import {
   InventoryData,
   MenuItem,
   ModalId,
+  NotificationService,
   UserInventory,
   Validation,
 } from '@app/core';
@@ -49,6 +50,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './inventory-form.component.scss',
 })
 export class InventoryFormComponent implements OnInit, OnDestroy {
+  // Form group for inventory details
   inventoryForm = new FormGroup({
     title: new FormControl('', [
       Validators.required,
@@ -74,23 +76,30 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
   // Image file url to show instantly before upload
   url: string = '';
 
+  // List of categories for the menu
   categoryList: MenuItem[] = CategoryMenuData;
 
-  // Saves data of user inventory in case of edit operation
+  // User inventory data for editing
   inventory!: UserInventory;
 
   // Disables save inventory button until data fields filled
   enableSave: boolean = false;
 
+  // Action to perform on the form
   formAction!: Action;
 
+  // Subject to manage component destruction
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private inventoryService: InventoryService,
+    private notificationService: NotificationService,
     private matDialogService: MatDialog,
   ) {}
 
+  /**
+   * Initialization lifecycle hook
+   */
   ngOnInit(): void {
     this.inventoryService.inventoryData
       .pipe(takeUntil(this.onDestroy$))
@@ -104,14 +113,22 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Clean up before component destruction
+   */
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
 
+  // Close modal dialog
   closeModal = () =>
     this.matDialogService.getDialogById(ModalId.INVENTORY_CREATE_EDIT)?.close();
 
+  /**
+   * Load form fields with existing inventory data
+   * @param data - UserInventory data to load into the form
+   */
   loadForm = (data: UserInventory) => {
     this.inventoryForm.setValue({
       title: data.itemName,
@@ -124,9 +141,17 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     this.enableSave = true;
   };
 
+  /**
+   * Get the title based on the form action
+   * @returns Title for the form
+   */
   getTitle = () =>
     this.formAction === Action.EDIT ? 'Update Inventory' : 'Create Inventory';
 
+  /**
+   * Handle file change event for uploading images
+   * @param event - Input change event
+   */
   onFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
 
@@ -144,6 +169,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     };
   };
 
+  /**
+   * Submit the form data for inventory management
+   */
   onSubmit = () => {
     const categeoryId = this.inventoryForm.get('category')?.value;
     const requestBody: CreateInventoryRequest = {
@@ -165,8 +193,9 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
       inventoryImageId = crypto.randomUUID();
       requestBody.inventoryImageId = inventoryImageId;
       callFn = this.inventoryService.createUserInventory(requestBody);
+      this.notificationService.success('Item added to inventory');
     } else {
-      inventoryImageId = this.inventory.inventoryImageId;
+      inventoryImageId = this.inventory.inventoryImageId || crypto.randomUUID();
       // inventoryImageId = crypto.randomUUID();
       requestBody.inventoryImageId = inventoryImageId;
       callFn = this.inventoryService.updateUserInventory(
@@ -178,9 +207,20 @@ export class InventoryFormComponent implements OnInit, OnDestroy {
     this.file && this.inventoryService.uploadImage(this.file, inventoryImageId);
 
     callFn.subscribe({
-      next: () => this.closeModal(),
+      next: () => {
+        this.formAction === Action.ADD
+          ? this.notificationService.success('New item added to inventory')
+          : this.notificationService.success('Item updated in inventory');
+
+        this.closeModal();
+      },
     });
   };
 
+  /**
+   * Get the index for the category
+   * @param index - Category index
+   * @returns Index value
+   */
   categoryIndex = (index: number) => index;
 }

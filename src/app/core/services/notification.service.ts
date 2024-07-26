@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NOTIF_TIMEOUT } from '../constants';
+import { NumberConstants } from '../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -17,19 +17,24 @@ export class NotificationService {
       message,
       '',
       'success-snackbar',
-      duration ?? NOTIF_TIMEOUT,
+      duration ?? NumberConstants.NOTIF_TIMEOUT,
     );
   }
 
   error(message: string, duration?: number) {
-    this.openSnackBar(message, '', 'error-snackbar', duration ?? NOTIF_TIMEOUT);
+    this.openSnackBar(
+      message,
+      '',
+      'error-snackbar',
+      duration ?? NumberConstants.NOTIF_TIMEOUT,
+    );
   }
 
   openSnackBar(
     message: string,
     action: string,
     className = '',
-    duration = NOTIF_TIMEOUT,
+    duration = NumberConstants.NOTIF_TIMEOUT,
   ) {
     this.snackBar.open(message, action, {
       duration: duration,

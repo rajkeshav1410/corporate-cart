@@ -19,7 +19,6 @@ import {
   CategoryMenuData,
   ModalId,
   SeachKeyMenuData,
-  Validation,
 } from '@app/core/constants';
 import { MenuItem } from '@app/core/models';
 import { FilterService } from '@app/core/services';

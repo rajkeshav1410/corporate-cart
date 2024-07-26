@@ -4,7 +4,11 @@ import { NgIf, NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { UserInventory, getInventoryImageUrl, PLACEHOLDER } from '@app/core';
+import {
+  UserInventory,
+  getInventoryImageUrl,
+  StringConstants,
+} from '@app/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -23,7 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './item-card.component.scss',
 })
 export class ItemCardComponent {
-  placeholder: string = PLACEHOLDER;
+  placeholder: string = StringConstants.PLACEHOLDER;
 
   @Input() item!: UserInventory;
 

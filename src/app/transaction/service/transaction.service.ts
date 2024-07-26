@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserInventory, API, getUrl, Transaction } from '@app/core';
+import { API, Transaction } from '@app/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({

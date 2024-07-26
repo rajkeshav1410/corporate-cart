@@ -17,7 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import {
   getInventoryImageUrl,
   ModalId,
-  PLACEHOLDER,
+  StringConstants,
   UserInventory,
 } from '@app/core';
 import { StoreService } from '@app/store';
@@ -43,7 +43,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './item-detail.component.scss',
 })
 export class ItemDetailComponent implements OnInit, OnDestroy {
-  placeholder: string = PLACEHOLDER;
+  placeholder: string = StringConstants.PLACEHOLDER;
 
   @Input() item!: UserInventory;
 

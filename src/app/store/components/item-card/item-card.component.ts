@@ -1,12 +1,13 @@
-import { Overlay } from '@angular/cdk/overlay';
 import { NgOptimizedImage } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { getInventoryImageUrl, PLACEHOLDER, UserInventory } from '@app/core';
-import { StoreService } from '@app/store/service';
+import {
+  getInventoryImageUrl,
+  StringConstants,
+  UserInventory,
+} from '@app/core';
 
 @Component({
   selector: 'app-item-card',
@@ -16,7 +17,7 @@ import { StoreService } from '@app/store/service';
   styleUrl: './item-card.component.scss',
 })
 export class ItemCardComponent {
-  placeholder: string = PLACEHOLDER;
+  placeholder: string = StringConstants.PLACEHOLDER;
 
   @Input() item!: UserInventory;
 

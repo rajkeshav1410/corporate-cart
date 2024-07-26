@@ -19,7 +19,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import Fuse from 'fuse.js';
+// import Fuse from 'fuse.js';
 import { FilterType } from '@app/core/models/filter.model';
 
 @Component({
@@ -41,7 +41,7 @@ export class StoreComponent implements OnInit {
 
   filteredItemList!: UserInventory[];
 
-  @ViewChild('itemDetail') itemDetail!: TemplateRef<any>;
+  @ViewChild('itemDetail') itemDetail!: TemplateRef<unknown>;
 
   constructor(
     private storeService: StoreService,
@@ -150,7 +150,7 @@ export class StoreComponent implements OnInit {
     let filteredList: UserInventory[] = [...itemList];
 
     if (filter.search) {
-      let fuse: Fuse<UserInventory>;
+      // let fuse: Fuse<UserInventory>;
       const options = {
         includeScore: true,
         keys: [] as string[],
