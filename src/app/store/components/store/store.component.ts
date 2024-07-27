@@ -1,6 +1,7 @@
 import { NgForOf } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
+  AuthService,
   CustomHttpErrorResponse,
   FilterComponent,
   FilterService,
@@ -8,7 +9,6 @@ import {
   NotificationService,
   Routes,
   SeachKeyMenuData,
-  StorageService,
   UserInventory,
 } from '@app/core';
 import { StoreService } from '@app/store/service';
@@ -45,7 +45,7 @@ export class StoreComponent implements OnInit {
 
   constructor(
     private storeService: StoreService,
-    private storageService: StorageService,
+    private authService: AuthService,
     private filterService: FilterService,
     private notificationService: NotificationService,
     private router: Router,
@@ -81,10 +81,11 @@ export class StoreComponent implements OnInit {
     });
   };
 
-  onBuy = (inventory: UserInventory) => {
-    if (!this.storageService.isLoggedIn()) this.router.navigate([Routes.LOGIN]);
+  onBuy = async (inventory: UserInventory) => {
+    const verified = await this.authService.verify();
+    if (!verified) return;
 
-    const userCoin = this.storageService.getUser()?.coin || 0;
+    const userCoin = this.authService.getUser()?.coin || 0;
     if (userCoin < inventory.price) {
       this.notificationService.error(
         "You don't have enough coin to purchase this item!",
@@ -98,8 +99,9 @@ export class StoreComponent implements OnInit {
           'Congratulations🎉 now you own this item',
         );
         this.fetchStoreData();
-        this.storageService.refreshUser();
+        this.authService.verify();
         this.matDialogService.getDialogById(ModalId.STORE_ITEM_DETAIL)?.close();
+        this.router.navigate([Routes.INVENTORY]);
       },
       error: (error: CustomHttpErrorResponse) => {
         this.notificationService.error(error.error.message);
@@ -108,6 +110,7 @@ export class StoreComponent implements OnInit {
   };
 
   onAddWishlist = (inventoryId: string) => {
+    console.log(inventoryId);
     // this.inventoryService.setInventoryData(editInventory, Action.EDIT);
     // this.openModalFromRight();
   };

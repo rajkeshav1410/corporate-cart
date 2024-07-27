@@ -108,7 +108,9 @@ export class InventoryComponent implements OnInit {
    * Handles unlisting an item from sale.
    * @param {string} inventoryId - The ID of the inventory to unlist.
    */
-  onUnlistSale = (inventoryId: string) => {};
+  onUnlistSale = (inventoryId: string) => {
+    console.log(inventoryId);
+  };
 
   /**
    * Deletes a specific inventory item.

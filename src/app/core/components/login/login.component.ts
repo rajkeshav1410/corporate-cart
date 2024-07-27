@@ -1,4 +1,4 @@
-import { Location, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -11,8 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService, StorageService } from '../../services';
-import { CustomHttpErrorResponse } from '../../models';
+import { AuthService } from '../../services';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -46,8 +45,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private storageService: StorageService,
-    private location: Location,
     private router: Router,
   ) {}
 
@@ -55,7 +52,7 @@ export class LoginComponent implements OnInit {
    * Initialization lifecycle hook
    */
   ngOnInit(): void {
-    if (this.storageService.isLoggedIn()) this.router.navigate(['']);
+    if (this.authService.isLoggedIn()) this.router.navigate(['']);
   }
 
   /**
@@ -74,13 +71,8 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.valid) {
       this.authService.login(email!, password!).subscribe({
-        next: (response) => {
-          this.storageService.saveUser(response);
-          this.location.back();
-        },
-        error: (error: CustomHttpErrorResponse) => {
-          console.log(error);
-          this.error = error.error.message;
+        error: (error: Error) => {
+          this.error = error.message;
         },
       });
     } else {

@@ -12,9 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {
+  AuthService,
   AuthUser,
   capitalize,
-  StorageService,
   StringConstants,
   Transaction,
   TransactionTableView,
@@ -67,13 +67,15 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private transactionService: TransactionService,
-    private storageService: StorageService,
+    private authService: AuthService,
     private datePipe: DatePipe,
     private pricePipe: PriceFormatPipe,
   ) {}
 
   ngOnInit(): void {
-    this.user = this.storageService.getUser();
+    this.authService.userData.pipe(takeUntil(this.onDestroy$)).subscribe({
+      next: (user) => (this.user = user),
+    });
 
     this.transactionService.transactionData
       .pipe(takeUntil(this.onDestroy$))

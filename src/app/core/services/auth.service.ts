@@ -1,14 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Routes, API } from '../constants';
 import { Router } from '@angular/router';
-import { AuthUser, VoidResponse } from '../models';
+import { AuthUser, CustomHttpErrorResponse, VoidResponse } from '../models';
+import { Location } from '@angular/common';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  // The private BehaviorSubject for storing user data, initialized with null
+  private _userData = new BehaviorSubject<AuthUser | null>(null);
+
+  /**
+   * Observable stream of user data for external access.
+   */
+  public readonly userData = this._userData.asObservable();
+
   /**
    * Constructor for AuthService.
    * @param {HttpClient} http - The HttpClient instance for making HTTP requests.
@@ -17,7 +27,19 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private location: Location,
+    private notificationService: NotificationService,
   ) {}
+
+  /**
+   * Saves the provided user data.
+   * @param {AuthUser} user - The user data to be saved.
+   */
+  public setUser(user: AuthUser | null): void {
+    this._userData.next(user);
+  }
+
+  getUser = () => this._userData.getValue();
 
   /**
    * Performs user login with the provided email and password.
@@ -26,16 +48,41 @@ export class AuthService {
    * @returns {Observable<AuthUser>} - An Observable of the authenticated user.
    */
   login = (email: string, password: string): Observable<AuthUser> =>
-    this.http.post<AuthUser>(API.LOGIN, {
-      email,
-      password,
-    });
+    this.http
+      .post<AuthUser>(API.LOGIN, {
+        email,
+        password,
+      })
+      .pipe(
+        tap({
+          next: (user: AuthUser) => {
+            this.setUser(user);
+            this.location.back();
+          },
+          error: (error: CustomHttpErrorResponse) => {
+            throw new Error(error.error.message);
+          },
+        }),
+      );
 
   /**
-   * Retrieves the profile of the authenticated user.
-   * @returns {Observable<AuthUser>} - An Observable of the authenticated user's profile.
+   * Refreshes the user data by fetching the latest profile from the server.
    */
-  profile = (): Observable<AuthUser> => this.http.get<AuthUser>(API.PROFILE);
+  verify = async (): Promise<boolean> => {
+    if (this.isLoggedIn()) return true;
+
+    return new Promise<boolean>((resolve) => {
+      this.http.get<AuthUser>(API.PROFILE).subscribe({
+        next: (user: AuthUser) => {
+          this.setUser(user);
+          resolve(true);
+        },
+        error: () => {
+          resolve(false);
+        },
+      });
+    });
+  };
 
   /**
    * Registers a new user with the provided name, email, and password.
@@ -62,7 +109,17 @@ export class AuthService {
   logout = (): Observable<VoidResponse> =>
     this.http.post(API.LOGOUT, {}).pipe(
       tap(() => {
+        this.setUser(null);
         this.router.navigate([Routes.LOGIN]);
       }),
     );
+
+  /**
+   * Checks if a user is logged in by checking session storage for user data.
+   * @returns {boolean} - True if a user is logged in, otherwise false.
+   */
+  isLoggedIn = (): boolean => {
+    const user = this._userData.getValue();
+    return !!user;
+  };
 }

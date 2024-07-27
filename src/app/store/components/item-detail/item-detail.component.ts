@@ -49,6 +49,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   @Output() onBuy = new EventEmitter<UserInventory>();
 
+  @Output() onTrade = new EventEmitter<UserInventory>();
+
   @Output() onAddToWishlist = new EventEmitter<string>();
 
   onDestroy$: Subject<void> = new Subject();
@@ -77,6 +79,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   getImageUrl = () => getInventoryImageUrl(this.item.inventoryImageId);
 
   onBuyButtonClicked = () => this.onBuy.emit(this.item);
+
+  onTradeButtonClicked = () => this.onTrade.emit(this.item);
 
   onWishlistButtonClicked = () => this.onAddToWishlist.emit(this.item.id);
 

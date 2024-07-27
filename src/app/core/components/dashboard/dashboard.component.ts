@@ -6,7 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { AuthService, StorageService } from '../../services';
+import { AuthService } from '../../services';
 import { AuthUser } from '../../models';
 import { AvatarComponent } from '../avatar';
 import { Subject, takeUntil } from 'rxjs';
@@ -35,25 +35,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Subject to manage component destruction
   onDestroy$: Subject<void> = new Subject();
 
-  constructor(
-    private authService: AuthService,
-    private storageService: StorageService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   /**
    * Initialization lifecycle hook
    */
   ngOnInit(): void {
-    this.storageService.userData.pipe(takeUntil(this.onDestroy$)).subscribe({
+    this.authService.userData.pipe(takeUntil(this.onDestroy$)).subscribe({
       next: (user: AuthUser | null) => {
         this.currentUser = user;
       },
     });
-
-    // Get the user if already logged in
-    if (this.storageService.isLoggedIn()) {
-      this.currentUser = this.storageService.getUser();
-    }
   }
 
   /**
@@ -68,13 +60,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Logout user and clean up storage
    */
   onLogout = () => {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.storageService.clean();
-      },
-      error: () => {
-        this.storageService.clean();
-      },
-    });
+    this.authService.logout().subscribe();
   };
 }

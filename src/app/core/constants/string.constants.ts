@@ -6,7 +6,10 @@ export const StringConstants = {
   USER_KEY: 'auth-user',
   PLACEHOLDER: './public/default',
 
+  'success.signup': 'Account created successfully',
+
   'error.common': 'Something went wrong!',
+  'error.login': 'Could not login!',
 };
 
 export const NumberConstants = {
