@@ -107,13 +107,22 @@ export const deleteInventory = async (
       next
     );
 
-  db.inventory.delete({
+  const deletedInventory = await db.inventory.delete({
     where: {
       id: req.params.inventoryId,
     },
   });
 
-  res.status(StatusCodes.OK).json({});
+  if (existingInventory.inventoryImageId) {
+    const imagePath = path.join(
+      __dirname,
+      "../../uploads",
+      existingInventory.inventoryImageId
+    );
+    fs.unlinkSync(imagePath);
+  }
+
+  res.status(StatusCodes.OK).json(deletedInventory);
 };
 
 export const getInventory = async (
@@ -381,8 +390,6 @@ export const getInventoryImage = async (
   );
 
   const defImagePath = path.join(__dirname, "../../uploads", "wallpaper");
-
-  console.log(imagePath);
 
   if (!fs.existsSync(imagePath))
     res.status(StatusCodes.OK).sendFile(defImagePath);

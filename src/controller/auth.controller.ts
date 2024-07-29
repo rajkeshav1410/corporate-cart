@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { AvatarGenerator } from "random-avatar-generator";
-import { db } from "@app/common";
+import { db, throwError } from "@app/common";
 import {
   LoginRequest,
   LoginRequestSchema,
@@ -25,7 +25,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   if (!existingUser)
     return next({
       message: `User with email ${loginRequest.email} doesn't exists`,
-      statusCode: StatusCodes.UNAUTHORIZED,
+      statusCode: StatusCodes.BAD_REQUEST,
     });
 
   const passwordMatch = await bcrypt.compare(
@@ -35,7 +35,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   if (!passwordMatch)
     return next({
       message: "The password does not match",
-      statusCode: StatusCodes.UNAUTHORIZED,
+      statusCode: StatusCodes.BAD_REQUEST,
     });
 
   createJwtToken(req, res, existingUser);
@@ -72,8 +72,11 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const me = async (req: Request, res: Response, next: NextFunction) => {
-  const { id, password, ...currentUser } = req.user ? req.user : ({} as User);
-  res.status(StatusCodes.OK).json(currentUser);
+  if (req.isAuthenticated) {
+    const { id, password, ...currentUser } = req.user;
+    res.status(StatusCodes.OK).json(currentUser);
+  } else
+    return throwError("Cannot fetch profile", StatusCodes.BAD_REQUEST, next);
 };
 
 const logout = async (req: Request, res: Response, next: NextFunction) => {
