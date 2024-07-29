@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       },
     });
+    this.authService.verifyUser();
   }
 
   /**
@@ -60,6 +61,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Logout user and clean up storage
    */
   onLogout = () => {
-    this.authService.logout().subscribe();
+    this.authService.logout();
   };
 }

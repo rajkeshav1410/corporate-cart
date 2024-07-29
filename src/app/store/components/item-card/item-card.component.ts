@@ -3,8 +3,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import {
   getInventoryImageUrl,
+  Routes,
   StringConstants,
   UserInventory,
 } from '@app/core';
@@ -23,9 +25,15 @@ export class ItemCardComponent {
 
   @Input() index: number = 0;
 
-  @Output() onClick = new EventEmitter<UserInventory>();
+  constructor(private router: Router) {}
 
   getImageUrl = () => getInventoryImageUrl(this.item.inventoryImageId);
 
-  openItemDetails = () => this.onClick.emit(this.item);
+  openItemDetails = () => {
+    this.router.navigate([Routes.STORE], {
+      queryParams: {
+        id: this.item.id,
+      },
+    });
+  };
 }

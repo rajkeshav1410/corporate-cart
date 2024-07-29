@@ -2,7 +2,7 @@ export const API = {
   LOGIN: '/api/v1/auth/login',
   SIGNUP: '/api/v1/auth/signup',
   LOGOUT: '/api/v1/auth/logout',
-  PROFILE: 'api/v1/auth/me',
+  PROFILE: 'api/v1/auth/track',
   GET_USER_INVENTORY: '/api/v1/inventory',
   GET_INVENTORY: '/api/v1/inventory/:inventoryId',
   CREATE_INVENTORY: '/api/v1/inventory/create',

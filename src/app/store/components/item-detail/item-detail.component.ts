@@ -53,6 +53,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   @Output() onAddToWishlist = new EventEmitter<string>();
 
+  @Output() onClose = new EventEmitter<void>();
+
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
@@ -83,6 +85,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   onTradeButtonClicked = () => this.onTrade.emit(this.item);
 
   onWishlistButtonClicked = () => this.onAddToWishlist.emit(this.item.id);
+
+  onCloseButtonClicked = () => this.onClose.emit();
 
   getWishlistTooltip = () => {
     return 'Add to wishlist';

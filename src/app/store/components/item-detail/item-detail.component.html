@@ -30,7 +30,7 @@
             mat-icon-button
             matTooltip="Close"
             [matTooltipPosition]="'above'"
-            mat-dialog-close
+            (click)="onCloseButtonClicked()"
           >
             <mat-icon>close</mat-icon>
           </button>

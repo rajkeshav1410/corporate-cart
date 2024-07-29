@@ -1,5 +1,11 @@
 import { NgForOf } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   AuthService,
   CustomHttpErrorResponse,
@@ -16,11 +22,17 @@ import { ItemCardComponent } from '../item-card';
 import { ItemDetailComponent } from '../item-detail';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Overlay } from '@angular/cdk/overlay';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  Params,
+  Router,
+} from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // import Fuse from 'fuse.js';
 import { FilterType } from '@app/core/models/filter.model';
+import { lastValueFrom, map, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-store',
@@ -36,12 +48,14 @@ import { FilterType } from '@app/core/models/filter.model';
   templateUrl: './store.component.html',
   styleUrl: './store.component.scss',
 })
-export class StoreComponent implements OnInit {
+export class StoreComponent implements OnInit, OnDestroy {
   itemList!: UserInventory[];
 
   filteredItemList!: UserInventory[];
 
   @ViewChild('itemDetail') itemDetail!: TemplateRef<unknown>;
+
+  onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private storeService: StoreService,
@@ -49,21 +63,46 @@ export class StoreComponent implements OnInit {
     private filterService: FilterService,
     private notificationService: NotificationService,
     private router: Router,
-    private matDialogService: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private modalService: MatDialog,
     private overlay: Overlay,
   ) {}
 
   ngOnInit(): void {
-    this.fetchStoreData();
+    const fetchStoreData$ = lastValueFrom(this.fetchStoreData());
+    fetchStoreData$.then(() => {
+      this.activatedRoute.queryParams
+        .pipe(
+          takeUntil(this.onDestroy$),
+          map((param) => convertToParamMap(param)),
+        )
+        .subscribe({
+          next: (param) => {
+            if (this.itemList && param && param.has('id')) {
+              const item = this.itemList.find(
+                (item) => item.id === param.get('id'),
+              );
+              item && this.openItemDetails(item);
+            }
+          },
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   fetchStoreData = () =>
-    this.storeService.getStoreItems().subscribe({
-      next: (response: UserInventory[]) => {
-        this.itemList = response;
-        this.filteredItemList = response;
-      },
-    });
+    this.storeService.getStoreItems().pipe(
+      tap({
+        next: (response: UserInventory[]) => {
+          this.itemList = response;
+          this.filteredItemList = response;
+        },
+      }),
+    );
 
   public getIdTracking = (index: number, item: UserInventory) => {
     return item.id;
@@ -71,13 +110,15 @@ export class StoreComponent implements OnInit {
 
   openItemDetails = (data: UserInventory) => {
     this.storeService.setStoreData(data);
-    this.matDialogService.open(this.itemDetail, {
+
+    this.modalService.open(this.itemDetail, {
       id: ModalId.STORE_ITEM_DETAIL,
       height: '23rem',
       width: '50rem',
       maxWidth: '50rem',
       panelClass: ['custom-dialog-nobg'],
       scrollStrategy: this.overlay.scrollStrategies.noop(),
+      disableClose: true,
     });
   };
 
@@ -98,9 +139,9 @@ export class StoreComponent implements OnInit {
         this.notificationService.success(
           'Congratulations🎉 now you own this item',
         );
-        this.fetchStoreData();
-        this.authService.verify();
-        this.matDialogService.getDialogById(ModalId.STORE_ITEM_DETAIL)?.close();
+        this.fetchStoreData().subscribe();
+        this.authService.verifyUser();
+        this.modalService.getDialogById(ModalId.STORE_ITEM_DETAIL)?.close();
         this.router.navigate([Routes.INVENTORY]);
       },
       error: (error: CustomHttpErrorResponse) => {
@@ -115,8 +156,13 @@ export class StoreComponent implements OnInit {
     // this.openModalFromRight();
   };
 
+  onCloseModal = () => {
+    this.modalService.getDialogById(ModalId.STORE_ITEM_DETAIL)?.close();
+    this.router.navigate([Routes.STORE]);
+  };
+
   openFilterModal = () => {
-    this.matDialogService
+    this.modalService
       .open(FilterComponent, {
         id: ModalId.FILTER,
         height: '100vh',
@@ -139,9 +185,7 @@ export class StoreComponent implements OnInit {
   filterStoreData = () => {
     this.filterService.filterData.subscribe({
       next: (filter: FilterType) => {
-        console.log(filter);
         this.filteredItemList = this.filterItemList(this.itemList, filter);
-        console.log(this.filteredItemList);
       },
     });
   };
@@ -184,11 +228,8 @@ export class StoreComponent implements OnInit {
           return [];
       }
 
-      // console.log(options);
       // fuse = new Fuse(filteredList, options);
       // filteredList = fuse.search(filter.search).map((result) => result.item);
-      console.log('filteredList');
-      console.log(filteredList);
     }
 
     if (filter.categories && filter.categories.length > 0) {

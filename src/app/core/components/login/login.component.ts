@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private location: Location,
     private router: Router,
   ) {}
 
@@ -52,7 +53,9 @@ export class LoginComponent implements OnInit {
    * Initialization lifecycle hook
    */
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) this.router.navigate(['']);
+    this.authService.verify().then((verified) => {
+      verified && this.location.back();
+    });
   }
 
   /**
@@ -71,6 +74,10 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.valid) {
       this.authService.login(email!, password!).subscribe({
+        next: () => {
+          this.location.back();
+          // this.router.navigate([Routes.STORE]);
+        },
         error: (error: Error) => {
           this.error = error.message;
         },

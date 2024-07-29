@@ -4,8 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Routes, API } from '../constants';
 import { Router } from '@angular/router';
 import { AuthUser, CustomHttpErrorResponse, VoidResponse } from '../models';
-import { Location } from '@angular/common';
-import { NotificationService } from './notification.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +26,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private location: Location,
-    private notificationService: NotificationService,
+    private modalService: MatDialog,
   ) {}
 
   /**
@@ -57,7 +55,6 @@ export class AuthService {
         tap({
           next: (user: AuthUser) => {
             this.setUser(user);
-            this.location.back();
           },
           error: (error: CustomHttpErrorResponse) => {
             throw new Error(error.error.message);
@@ -68,20 +65,39 @@ export class AuthService {
   /**
    * Refreshes the user data by fetching the latest profile from the server.
    */
-  verify = async (): Promise<boolean> => {
-    if (this.isLoggedIn()) return true;
-
+  verifyUser = async (): Promise<boolean> => {
     return new Promise<boolean>((resolve) => {
       this.http.get<AuthUser>(API.PROFILE).subscribe({
         next: (user: AuthUser) => {
           this.setUser(user);
           resolve(true);
         },
-        error: () => {
+        error: (error) => {
+          this.setUser(null);
           resolve(false);
         },
       });
     });
+  };
+
+  /**
+   * Refreshes the user data by fetching the latest profile from the server.
+   */
+  verify = async () => {
+    const user = this._userData.getValue();
+    if (!user) {
+      const res = await this.verifyUser().then((verified) => {
+        if (verified) {
+          return true;
+        } else {
+          this.modalService.closeAll();
+          this.navigateToLogin();
+          return false;
+        }
+      });
+      return res;
+    }
+    return true;
   };
 
   /**
@@ -106,13 +122,13 @@ export class AuthService {
    * Logs out the authenticated user.
    * @returns {Observable<VoidResponse>} - An Observable for the logout response.
    */
-  logout = (): Observable<VoidResponse> =>
-    this.http.post(API.LOGOUT, {}).pipe(
-      tap(() => {
+  logout = () =>
+    this.http.post(API.LOGOUT, {}).subscribe({
+      next: () => {
         this.setUser(null);
-        this.router.navigate([Routes.LOGIN]);
-      }),
-    );
+        this.navigateToLogin();
+      },
+    });
 
   /**
    * Checks if a user is logged in by checking session storage for user data.
@@ -122,4 +138,6 @@ export class AuthService {
     const user = this._userData.getValue();
     return !!user;
   };
+
+  navigateToLogin = () => this.router.navigate([Routes.LOGIN]);
 }
