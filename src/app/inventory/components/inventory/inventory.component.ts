@@ -109,7 +109,11 @@ export class InventoryComponent implements OnInit {
    * @param {string} inventoryId - The ID of the inventory to unlist.
    */
   onUnlistSale = (inventoryId: string) => {
-    console.log(inventoryId);
+    this.inventoryService.archiveUserInventory(inventoryId).subscribe({
+      next: () => {
+        this.fetchInventoryData();
+      },
+    });
   };
 
   /**
