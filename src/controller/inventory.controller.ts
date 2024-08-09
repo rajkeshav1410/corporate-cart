@@ -15,6 +15,7 @@ import {
   TransactionType,
 } from "@prisma/client";
 import { db, throwError } from "@app/common";
+import { ADDRGETNETWORKPARAMS } from "dns/promises";
 
 export const createInventory = async (
   req: Request,
@@ -206,7 +207,11 @@ export const sellInventory = async (
 
   const existingTransaction = await db.transaction.findFirst({
     where: {
-      saleInventoryId,
+      AND: [
+        { saleInventoryId },
+        { type: TransactionType.SALE_BUY },
+        { status: TransactionStatus.ONSALE },
+      ],
     },
   });
 
@@ -240,6 +245,42 @@ export const archiveInventory = async (
   res: Response,
   next: NextFunction
 ) => {
+  const archiveInventoryId = req.params.inventoryId;
+  const existingInventory = await db.inventory.findFirst({
+    where: {
+      id: archiveInventoryId,
+    },
+  });
+
+  if (!existingInventory)
+    return throwError(
+      `Inventory with id ${archiveInventoryId} does not exist`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  const existingTransaction = await db.transaction.findFirst({
+    where: {
+      saleInventoryId: archiveInventoryId,
+      buyer: null,
+      type: TransactionType.SALE_BUY,
+      status: TransactionStatus.ONSALE,
+    },
+  });
+
+  if (!existingInventory)
+    return throwError(
+      `Inventory with id ${archiveInventoryId} not on sale`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  await db.transaction.delete({
+    where: {
+      id: existingTransaction?.id,
+    },
+  });
+
   res.status(StatusCodes.OK).json({});
 };
 
@@ -258,22 +299,6 @@ export const buyInventory = async (
   if (!existingInventory)
     return throwError(
       `Inventory with id ${req.params.inventoryId} does not exist`,
-      StatusCodes.BAD_REQUEST,
-      next
-    );
-
-  const buyerBalance = await db.user.findFirst({
-    where: {
-      id: req.user.id,
-    },
-    select: {
-      coin: true,
-    },
-  });
-
-  if (buyerBalance && buyerBalance.coin < existingInventory.price)
-    return throwError(
-      `Don't have enough balance`,
       StatusCodes.BAD_REQUEST,
       next
     );
@@ -304,6 +329,23 @@ export const buyInventory = async (
   if (!onSaleTransaction)
     return throwError(
       `Inventory not listed OnSale`,
+      StatusCodes.BAD_REQUEST,
+      next
+    );
+
+  // const buyerBalance = req.user.coin;
+  const buyerBalance = await db.user.findFirst({
+    where: {
+      id: req.user.id,
+    },
+    select: {
+      coin: true,
+    },
+  });
+
+  if (buyerBalance && buyerBalance.coin < existingInventory.price)
+    return throwError(
+      `Don't have enough balance`,
       StatusCodes.BAD_REQUEST,
       next
     );
