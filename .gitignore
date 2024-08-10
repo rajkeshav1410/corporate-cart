@@ -104,3 +104,4 @@ backend/logs/
 !backend/uploads/wallpaper
 
 uploads
+frontend/.angular/
