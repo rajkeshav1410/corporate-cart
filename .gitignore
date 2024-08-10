@@ -95,10 +95,10 @@ node_modules
 # Keep environment variables out of version control
 .env
 
-dist
-logs
+dist/
+logs/
 
-backend/dist
-backend/logs
+backend/dist/
+backend/logs/
 
 uploads
