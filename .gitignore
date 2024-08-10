@@ -101,4 +101,6 @@ logs/
 backend/dist/
 backend/logs/
 
+!backend/uploads/wallpaper
+
 uploads
