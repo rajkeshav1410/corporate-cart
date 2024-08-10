@@ -1,0 +1,66 @@
+<mat-card appearance="outlined" class="item-card mat-typography">
+  <mat-card-content>
+    <div class="item-detail-container">
+      <div class="image-wrapper">
+        <img
+          ngSrc="{{ getImageUrl() }}"
+          class="item-card-image"
+          [placeholder]="placeholder"
+          fill
+        />
+      </div>
+      <div class="detail">
+        <div class="title">
+          {{ this.item.itemName }}
+        </div>
+        <mat-chip class="category">{{ this.item.category }}</mat-chip>
+        <div class="description">{{ this.item.itemDescription }}</div>
+      </div>
+      <div class="control-wrapper">
+        <div class="controls">
+          <button
+            mat-icon-button
+            [matTooltip]="getWishlistTooltip()"
+            [matTooltipPosition]="'above'"
+            (click)="onWishlistButtonClicked()"
+          >
+            <mat-icon>favorite</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Close"
+            [matTooltipPosition]="'above'"
+            (click)="onCloseButtonClicked()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <div class="price">
+          <mat-icon mat-list-icon>currency_rupee</mat-icon>{{ this.item.price }}
+        </div>
+        <div class="control-buttons">
+          <button
+            mat-stroked-button
+            class="buy-button"
+            (click)="onBuyButtonClicked()"
+          >
+            <mat-icon mat-list-icon>shopping_bag</mat-icon>
+            Buy
+          </button>
+          <div class="divider">
+            <span class="text">OR</span>
+            <span><mat-divider></mat-divider></span>
+          </div>
+          <button
+            mat-stroked-button
+            class="trade-button"
+            (click)="onTradeButtonClicked()"
+          >
+            <mat-icon mat-list-icon>published_with_changes</mat-icon>
+            Trade
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

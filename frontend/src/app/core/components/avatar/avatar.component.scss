@@ -1,0 +1,30 @@
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: larger;
+  font-weight: 100;
+
+  .avatar {
+    border-radius: 50%;
+    margin-top: -0.2rem;
+    margin-left: 0.5rem;
+  }
+
+  .coin {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: medium;
+    font-weight: 500;
+    column-gap: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .avatar-wrapper {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+  }
+}

@@ -1,0 +1,17 @@
+<div class="store-contatiner">
+  <app-item-card
+    *ngFor="let item of filteredItemList; trackBy: getIdTracking; index as i"
+    [item]="item"
+    [index]="i"
+  ></app-item-card>
+  <button mat-fab class="filter-button" (click)="openFilterModal()">
+    <mat-icon mat-list-icon>tune</mat-icon>
+  </button>
+</div>
+<ng-template #itemDetail>
+  <app-item-detail
+    (onBuy)="onBuy($event)"
+    (onAddToWishlist)="onAddWishlist($event)"
+    (onClose)="onCloseModal()"
+  ></app-item-detail>
+</ng-template>

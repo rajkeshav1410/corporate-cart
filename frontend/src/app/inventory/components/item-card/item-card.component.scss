@@ -1,0 +1,89 @@
+.inventory-card {
+  margin-bottom: 16px;
+  height: 12rem;
+
+  .inventory-detail-container {
+    display: flex;
+    flex-direction: row;
+
+    .image-wrapper {
+      position: relative;
+      width: 13rem;
+      min-width: 13rem;
+      height: 10rem;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 250px;
+        border-radius: 5px;
+      }
+    }
+
+    .detail {
+      display: flex;
+      flex-direction: column;
+      margin-left: 1rem;
+      height: 10rem;
+      width: 50%;
+      min-width: 50%;
+
+      .mat-mdc-standard-chip {
+        --mdc-chip-label-text-size: x-small;
+        --mdc-chip-label-text-weight: 900;
+      }
+
+      .mat-mdc-chip.mat-mdc-standard-chip {
+        --mdc-chip-container-height: 24px;
+      }
+
+      .title {
+        font-size: larger;
+        font-weight: 600;
+      }
+
+      .category {
+        font-size: x-small;
+        font-weight: 600;
+        margin-bottom: 4px;
+        margin-top: 2px;
+        width: fit-content;
+      }
+
+      .description {
+        font-size: small;
+        font-weight: 400;
+        overflow-y: scroll;
+        scrollbar-width: none;
+        line-height: 20px;
+      }
+    }
+
+    .control-wrapper {
+      display: flex;
+      flex-direction: column;
+      margin-left: 1rem;
+      height: 10rem;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      margin-left: auto;
+      padding-bottom: 0.25rem;
+
+      .controls {
+        scale: 1;
+      }
+
+      .price {
+        font-size: x-large;
+        font-weight: 600;
+
+        display: flex;
+        margin-top: 0.5rem;
+      }
+
+      .sell-button {
+        margin-top: auto;
+      }
+    }
+  }
+}

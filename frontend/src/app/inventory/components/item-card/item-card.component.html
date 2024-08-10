@@ -1,0 +1,77 @@
+<mat-card appearance="outlined" class="inventory-card mat-typography">
+  <mat-card-content>
+    <div class="inventory-detail-container">
+      <div class="image-wrapper">
+        <img
+          ngSrc="{{ getImageUrl() }}"
+          class="inventory-card-image"
+          [placeholder]="placeholder"
+          [priority]="index < 5"
+          fill
+        />
+      </div>
+      <div class="detail">
+        <div class="title">
+          {{ this.item.itemName }}
+        </div>
+        <mat-chip class="category">{{ this.item.category }}</mat-chip>
+        <div class="description">{{ this.item.itemDescription }}</div>
+      </div>
+      <div class="control-wrapper">
+        <div class="controls">
+          <button
+            mat-icon-button
+            matTooltip="Unlist form sale"
+            [matTooltipPosition]="'above'"
+            [disabled]="!item.onSale || isDetailView"
+            (click)="onUnlistSaleButtonClicked()"
+          >
+            <mat-icon>archive</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Edit item"
+            [matTooltipPosition]="'above'"
+            [disabled]="isDetailView"
+            (click)="onEditButtonClicked()"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <ng-container *ngIf="!isDetailView; else closeButton">
+            <button
+              mat-icon-button
+              matTooltip="Delete item"
+              [matTooltipPosition]="'above'"
+              (click)="onDeleteButtonClicked()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #closeButton>
+            <button
+              mat-icon-button
+              matTooltip="Close view"
+              [matTooltipPosition]="'above'"
+              (click)="onCloseButtonClicked()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </ng-template>
+        </div>
+        <div class="price">
+          <mat-icon mat-list-icon>currency_rupee</mat-icon>{{ this.item.price }}
+        </div>
+        <button
+          mat-stroked-button
+          class="sell-button"
+          [disabled]="item.onSale || isDetailView"
+          (click)="onSellButtonClicked()"
+        >
+          <mat-icon mat-list-icon>unarchive</mat-icon>
+          Sell
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

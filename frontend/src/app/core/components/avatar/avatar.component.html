@@ -1,0 +1,12 @@
+<div class="user-avatar">
+  <div class="user-wrapper">
+    {{ user.name | nameTransformer }}
+    <div class="coin">
+      <img ngSrc="coin" width="16" height="16" />
+      {{ user.coin }}
+    </div>
+  </div>
+  <div class="avatar-wrapper">
+    <img ngSrc="{{ user.avatar }}" class="avatar" priority fill />
+  </div>
+</div>
