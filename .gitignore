@@ -1,57 +1,42 @@
-# Dependency directories
-node_modules/
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
 npm-debug.log
 yarn-error.log
 
-# Build files
-/build/
-/backend/dist/
-.DS_Store
-.env
-
-# IDE files
-.vscode/
+# IDEs and editors
 .idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# OS generated files
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-Icon?
-ehthumbs.db
 Thumbs.db
-
-# Logs
-logs/
-*.log
-
-# Dependency directories
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage
-
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
-
-# SFTP configuration file
-.sftpCache
-
-# Compiled binary addons (https://github.com/nodejs/node-gyp)
-build/Release
-
-node_modules
-# Keep environment variables out of version control
-.env
-
-dist
-
-uploads
