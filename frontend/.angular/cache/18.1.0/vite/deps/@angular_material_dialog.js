@@ -1,4 +1,14 @@
 import {
+  animate,
+  animateChild,
+  group,
+  query,
+  state,
+  style,
+  transition,
+  trigger
+} from "./chunk-7RIIXCLX.js";
+import {
   BasePortalOutlet,
   CdkPortalOutlet,
   ComponentPortal,
@@ -14,16 +24,6 @@ import {
   CdkScrollable
 } from "./chunk-YW4PIICB.js";
 import "./chunk-3XQ64HAE.js";
-import {
-  animate,
-  animateChild,
-  group,
-  query,
-  state,
-  style,
-  transition,
-  trigger
-} from "./chunk-7RIIXCLX.js";
 import {
   A11yModule,
   FocusMonitor,
